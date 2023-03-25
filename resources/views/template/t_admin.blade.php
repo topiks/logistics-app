@@ -321,7 +321,7 @@
                                 </a>
 
                                 <div class="dropdown-menu  dropdown-menu-right ">
-                                    <a href="" class="dropdown-item">
+                                    <a href="/logout" class="dropdown-item">
                                         <span>Logout</span>
                                     </a>
                                 </div>

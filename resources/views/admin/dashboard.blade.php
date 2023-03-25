@@ -9,7 +9,9 @@
     <div class="container-fluid d-flex align-items-center">
         <div class="row">
             <div class="col col-md-10">
+                @if ($role == 0)
                 <h1 class="display-2 text-white mb-5" style="font-size: 50px">SELAMAT DATANG ADMIN</h1>
+                @endif
             </div>
         </div>
     </div>
