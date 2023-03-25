@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // ========================================================================
 
-Route::get('/clear-cache', function () {
+Route::get('/clear', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
 });
@@ -24,6 +24,14 @@ Route::get('/clear-cache', function () {
 
 Route::get('/', function () {
     return view('account.login');
+});
+
+Route::get('/login', function () {
+    return view('account.login');
+});
+
+Route::get('/dashboard', function () {
+    return view('admin.dashboard');
 });
 
 

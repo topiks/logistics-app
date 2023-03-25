@@ -295,7 +295,7 @@ iframe {
 }
 
 .label-input100 {
-  font-family: Montserrat-Regular;
+  /* font-family: Montserrat-Regular; */
   font-size: 15px;
   color: #999999;
   line-height: 1.2;
@@ -318,7 +318,7 @@ iframe {
   display: block;
   width: 100%;
   background: transparent;
-  font-family: Montserrat-Regular;
+  /* font-family: Montserrat-Regular; */
   font-size: 18px;
   color: #555555;
   line-height: 1.2;
