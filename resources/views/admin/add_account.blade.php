@@ -10,7 +10,6 @@
                     <div class="col-lg-6 col-7">
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                                <li class="breadcrumb-item"><a><i class="fas fa-home" style="color: #172B4D"></i></a></li>
                                 <li class="breadcrumb-item"><a style="color: #172B4D">Tambahkan Akun</a></li>
                             </ol>
                         </nav>
@@ -32,12 +31,6 @@
                                     <div class="card-body">
                                         <form action="{{ route('admin.add-account-process') }}" enctype="multipart/form-data" method="post">
                                             @csrf
-
-                                            @if ($notification = Session::get('success'))
-                                            <div class="alert alert-success" role="alert">
-                                                <strong>{{ $notification }}</strong>
-                                            </div>
-                                            @endif
 
                                             @if ($notification = Session::get('failed'))
                                             <div class="alert alert-danger" role="alert">

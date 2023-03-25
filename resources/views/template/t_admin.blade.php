@@ -44,12 +44,14 @@
                                 </a>
                             </li>
 
+                            <hr class="my-2">
+
                             @if (Auth::user()->role == 0)
                             <li class="nav-item">
-                                <a class="nav-link" href="/add-account"
+                                <a class="nav-link" href="/list-user"
                                     style="font-size: 18px; text-align: center">
-                                    <i class="fas fa-plus" style="font-size: 16px;"></i>
-                                    <span class="nav-link-text ml-2">Tambah Akun</span>
+                                    <i class="fas fa-user-check" style="font-size: 16px;"></i>
+                                    <span class="nav-link-text ml-2">List User</span>
                                 </a>
                             </li>
                             @endif

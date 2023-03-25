@@ -48,20 +48,20 @@ Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 */
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');    
+});
+
+Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
+
+    Route::get('/list-user', [UserController::class, 'list_user'])->name('admin.list-user');
+    Route::get('/delete_user/{id}', [UserController::class, 'delete_user'])->name('admin.delete_user');
+    Route::post('/edit_role_user/', [UserController::class, 'edit_role_user'])->name('admin.edit_role_user');
+    Route::post('/edit_password_user/', [UserController::class, 'edit_password_user'])->name('admin.edit_password_user');
 
     Route::get('/add-account', [UserController::class, 'add_account'])->name('admin.add-account');
     Route::post('/add-account', [UserController::class, 'add_account_process'])->name('admin.add-account-process');
     
 });
-
-// Route::group(['middleware' => ['auth', 'checkrole:1']], function () {
-//     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
-
-//     Route::get('/add-account', [UserController::class, 'add_account'])->name('admin.add-account');
-//     Route::post('/add-account', [UserController::class, 'add_account_process'])->name('admin.add-account-process');
-    
-// });
 
 
 

@@ -71,7 +71,49 @@ class UserController extends Controller
         return view('admin.dashboard', compact('role'));
     }
 
-    // ------------------------------------------
+    // ----------------------------------------------
+    // ==============================================
+
+    public function list_user()
+    {
+        $users = User::all();
+        return view('admin.list_user', compact('users'));
+    }
+
+    public function delete_user($_id)
+    {
+        $user = User::find($_id);
+        $user->delete();
+
+        // ----------------------
+
+        return redirect()->route('admin.list-user')->with('success', 'Account successfully deleted');
+    }
+
+    public function edit_role_user(Request $request)
+    {
+        $user = User::find($request->input('id'));
+        $user->role = $request->input('role');
+        $user->save();
+
+        // ----------------------
+
+        return redirect()->route('admin.list-user')->with('success', 'Account role successfully updated');
+    }
+
+    public function edit_password_user(Request $request)
+    {
+        $user = User::find($request->input('id'));
+        $user->password = Hash::make($request->input('password'));
+        $user->save();
+
+        // ----------------------
+
+        return redirect()->route('admin.list-user')->with('success', 'Account password successfully updated');
+    }
+
+    // ----------------------------------------------
+    // ==============================================
 
     public function add_account()
     {
@@ -99,6 +141,8 @@ class UserController extends Controller
         $user->role = $request->input('role');
         $user->save();
 
-        return redirect()->route('admin.add-account')->with('success', 'Account successfully added');
+        // ----------------------
+
+        return redirect()->route('admin.list-user')->with('success', 'Account successfully added');
     }
 }

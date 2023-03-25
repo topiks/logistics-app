@@ -16,6 +16,18 @@
                 @if ($role == 1)
                 <h1 class="display-2 text-white mb-5" style="font-size: 50px">SELAMAT DATANG SPY MANAGEMENT MATERIAL</h1>
                 @endif
+
+                @if ($role == 2)
+                <h1 class="display-2 text-white mb-5" style="font-size: 50px">SELAMAT DATANG STAFF GUDANG UTAMA</h1>
+                @endif
+
+                @if ($role == 3)
+                <h1 class="display-2 text-white mb-5" style="font-size: 50px">SELAMAT DATANG STAFF GUDANG WORKSHOP</h1>
+                @endif
+
+                @if ($role == 4)
+                <h1 class="display-2 text-white mb-5" style="font-size: 50px">SELAMAT DATANG STAFF PENGADAAN</h1>
+                @endif
             </div>
         </div>
     </div>
