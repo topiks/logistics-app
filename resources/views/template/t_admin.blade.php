@@ -6,11 +6,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
-        <meta name="author" content="Taufik Hidayat">
 
         <title>@yield('title')</title>
 
-        <link rel="icon" href="admin/assets/img/homepage/evol.png" type="image/png">
+        <link rel="icon" type="image/png" href="general/images/favicon-bbi.png"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
         <link rel="stylesheet" href="admin/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
         <link rel="stylesheet" href="admin/assets/css/argon.css?v=1.2.0" type="text/css">
@@ -26,10 +25,8 @@
                 
                 <div class="sidenav-header  align-items-center mb-4">
                     <a class="navbar-brand" href="javascript:void(0)">
-
-                        <h1>EVOLUTION</h1>
-                        <p> Admin Controls </p>
-
+                        <h1>BBI Warehouse</h1>
+                        <p>Admin Panel</p>
                     </a>
                 </div>
 
@@ -40,12 +37,22 @@
                         <ul class="navbar-nav">
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#"
+                                <a class="nav-link" href="/dashboard"
                                     style="font-size: 18px; text-align: center">
                                     <i class="fas fa-home" style="font-size: 16px;"></i>
                                     <span class="nav-link-text ml-2">Dashboard</span>
                                 </a>
                             </li>
+
+                            @if (Auth::user()->role == 0)
+                            <li class="nav-item">
+                                <a class="nav-link" href="/add-account"
+                                    style="font-size: 18px; text-align: center">
+                                    <i class="fas fa-plus" style="font-size: 16px;"></i>
+                                    <span class="nav-link-text ml-2">Tambah Akun</span>
+                                </a>
+                            </li>
+                            @endif
 
                             <!-- <hr class="my-2">
 

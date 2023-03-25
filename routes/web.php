@@ -47,9 +47,23 @@ Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 |---- 4 = Staff Pengadaan
 */
 
-Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
+
+    Route::get('/add-account', [UserController::class, 'add_account'])->name('admin.add-account');
+    Route::post('/add-account', [UserController::class, 'add_account_process'])->name('admin.add-account-process');
+    
 });
+
+// Route::group(['middleware' => ['auth', 'checkrole:1']], function () {
+//     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
+
+//     Route::get('/add-account', [UserController::class, 'add_account'])->name('admin.add-account');
+//     Route::post('/add-account', [UserController::class, 'add_account_process'])->name('admin.add-account-process');
+    
+// });
+
+
 
 
 
