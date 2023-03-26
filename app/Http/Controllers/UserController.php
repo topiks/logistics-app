@@ -122,6 +122,35 @@ class UserController extends Controller
     // ----------------------------------------------
     // ==============================================
 
+    public function ganti_pass_display()
+    {
+        return view('account.ganti_pass');
+    }
+
+    public function ganti_pass_process(Request $request)
+    {
+        $old_password = $request->input('password_lama');
+        $new_password = $request->input('password_baru');
+
+        // ----------------------
+
+        if (Hash::check($old_password, Auth::user()->password))
+        {
+            $user = User::find(Auth::user()->id);
+            $user->password = Hash::make($new_password);
+            $user->save();
+
+            // ----------------------
+
+            return redirect()->route('admin.ganti_pass')->with('success', 'Password successfully updated');
+        }
+        else
+            return redirect()->route('admin.ganti_pass')->with('failed', 'Old password is incorrect');
+    }
+
+    // ----------------------------------------------
+    // ==============================================
+
     public function dashboard()
     {
         $role = Auth::user()->role;

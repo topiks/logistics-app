@@ -35,10 +35,6 @@ Route::post('/login', [UserController::class, 'login'])->name('user.login');
 
 // ----------------------
 
-Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
-
-// ----------------------
-
 Route::get('/forget_pass', [UserController::class, 'send_email_forget_password']);
 Route::get('/ready_forget_pass', [UserController::class, 'set_to_forgetting_password'])->name('admin.ready_forget_pass');
 Route::get('/reset_pass', [UserController::class, 'reset_pass_display'])->name('admin.reset_pass');
@@ -56,6 +52,13 @@ Route::post('/reset_pass', [UserController::class, 'set_new_pass'])->name('admin
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');    
+
+    // ----------------------
+
+    Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
+
+    Route::get('/ganti_pass', [UserController::class, 'ganti_pass_display'])->name('admin.ganti_pass');
+    Route::post('/ganti_pass', [UserController::class, 'ganti_pass_process'])->name('admin.ganti_pass_process');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
@@ -64,6 +67,8 @@ Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
     Route::get('/delete_user/{id}', [UserController::class, 'delete_user'])->name('admin.delete_user');
     Route::post('/edit_role_user/', [UserController::class, 'edit_role_user'])->name('admin.edit_role_user');
     Route::post('/edit_password_user/', [UserController::class, 'edit_password_user'])->name('admin.edit_password_user');
+
+    // ----------------------
 
     Route::get('/add-account', [UserController::class, 'add_account'])->name('admin.add-account');
     Route::post('/add-account', [UserController::class, 'add_account_process'])->name('admin.add-account-process');

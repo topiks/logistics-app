@@ -330,6 +330,12 @@
                                 </a>
 
                                 <div class="dropdown-menu  dropdown-menu-right ">
+                                    <div class="dropdown-item">
+                                        <span>User : {{ Auth::user()->username }}</span>
+                                    </div>
+                                    <a href="/ganti_pass" class="dropdown-item">
+                                        <span>Ganti Password</span>
+                                    </a>
                                     <a href="/logout" class="dropdown-item">
                                         <span>Logout</span>
                                     </a>
