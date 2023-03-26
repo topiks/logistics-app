@@ -37,6 +37,13 @@ Route::post('/login', [UserController::class, 'login'])->name('user.login');
 
 Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 
+// ----------------------
+
+Route::get('/forget_pass', [UserController::class, 'send_email_forget_password']);
+Route::get('/ready_forget_pass', [UserController::class, 'set_to_forgetting_password'])->name('admin.ready_forget_pass');
+Route::get('/reset_pass', [UserController::class, 'reset_pass_display'])->name('admin.reset_pass');
+Route::post('/reset_pass', [UserController::class, 'set_new_pass'])->name('admin.reset_pass_process');
+
 // ========================================================================
 
 /*

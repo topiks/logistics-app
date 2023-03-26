@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Mail;
+
 use App\Models\User;
+use App\Mail\MyMail;
 
 class UserController extends Controller
 {
@@ -60,6 +63,60 @@ class UserController extends Controller
     public function display_login()
     {
         return view('account.login');
+    }
+
+    // ----------------------------------------------
+    // ==============================================
+
+    public function send_email_forget_password()
+    {
+        $mail_data = [
+            'title' => 'Forget Password',
+            'body' => 'This is for testing email using smtp'
+        ];
+
+        // ----------------------
+
+        Mail::to('hiitaufik24@gmail.com')->send(new MyMail($mail_data));
+
+        // ----------------------
+
+        if (Mail::flushMacros())
+            return redirect()->route('user.login')->with('failed', 'Something wrong with your email');
+        else
+            return redirect()->route('user.login')->with('success', 'Check your email for reset password');
+    }
+
+    public function set_to_forgetting_password()
+    {
+        $user = User::where('role', '=', '0')->first();
+        $user->status_pass = 1;
+
+        // ----------------------
+
+        if ($user->save())
+            return redirect()->route('admin.reset_pass');
+        else
+            return redirect()->route('user.login')->with('failed', 'Something wrong with your email');
+    }
+
+    public function reset_pass_display()
+    {
+        return view('account.reset_pass');
+    }
+
+    public function set_new_pass(Request $request)
+    {
+        $user = User::where('role', '=', '0')->first();
+        $user->password = Hash::make($request->input('password'));
+        $user->status_pass = 0;
+
+        // ----------------------
+
+        if ($user->save())
+            return redirect()->route('user.login')->with('success', 'Password successfully updated');
+        else
+            return redirect()->route('user.login')->with('failed', 'Something wrong with your email');
     }
 
     // ----------------------------------------------
@@ -139,6 +196,7 @@ class UserController extends Controller
         $user->username = $request->input('username');
         $user->password = Hash::make($request->input('password'));
         $user->role = $request->input('role');
+        $user->status_pass = 0;
         $user->save();
 
         // ----------------------

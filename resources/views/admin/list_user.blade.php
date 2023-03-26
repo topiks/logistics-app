@@ -113,12 +113,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h3 class="mt-3">Ubah Role</h3>
+                    <h3 class="mt-3">Ganti Password</h3>
                     <form action="{{ route('admin.edit_password_user') }}" enctype="multipart/form-data" method="post">
                         @csrf
                         <div class="form-group">
-                            <label class="form-control-label" for="input-school">Password</label>
-                            <input name="password" type="password" class="form-control" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            <input name="password" type="password" class="form-control" placeholder="Password Baru" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                 title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
                         </div>
 

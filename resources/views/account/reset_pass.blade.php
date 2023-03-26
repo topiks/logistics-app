@@ -1,17 +1,17 @@
 @extends('template/t_account')
-@section('title', 'Login')
+@section('title', 'Reset Password for Admin Only')
 
 @section('container')
 
 <div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" method="post" action="{{ route('user.login') }}">
+				<form class="login100-form validate-form" method="post" action="{{ route('admin.reset_pass_process') }}">
 					@csrf
 					<span class="login100-form-title p-b-43">
-                        BBI Warehouse Material System Login
+                        Reset Admin Password
 					</span>
-					
+
 					@if ($notification = Session::get('failed'))
 					<div class="alert alert-danger" role="alert">
 						<strong>{{ $notification }}</strong>
@@ -24,25 +24,13 @@
 					</div>
 					@endif
 					
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="username" placeholder="username">
-					</div>
-					
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="password" placeholder="password">
-					</div>
-
-					<div class="flex-sb-m w-full p-t-9 p-b-32">
-						<div>
-							<a href="/forget_pass" class="txt1">
-								Forgot Password?
-							</a>
-						</div>
+						<input class="input100" type="password" name="password" placeholder="new password">
 					</div>
 
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn" type=submit>
-							Login
+							Reset
 						</button>
 					</div>
 					
