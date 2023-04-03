@@ -1,66 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Ringkasan Task
+### 1. Pemakaian Material Gudang Kecil
+### 2. Pemakaian Material Gudang Besar
+### 3. Penerimaan Barang Gudang Besar
+### 4. Penolakan Material
 
-## About Laravel
+<br />
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Fitur
+#### 1. domain dan server
+#### 2. akses by pc, komputer, hp
+#### 3. pembagian user
+#### 4. dashboard menampilkan informasi material yang sudah dibuatkan PO yang akan datang, lengkap dengan deskripsi material, dokumen yang disertakan
+#### 5. Merekap seluruh material list yang menjadi persediaan perusahaan sebelum lanjut ke tahap produksi
+#### 6. List material dapat dicari by jenis, no, po, nama project
+#### 7. dapat menginput lokasi penempatan material
+#### 8. download excel dengan format yang sudah ditentukan
+#### 9. menginput nama project 
+#### 10. Menginput nama supplier/vendor dari material
+#### 11. merekap persediaan harian, bulanan, dan tahunan
+#### 12. menyesuaikan status material dan terekap dengan baik
+#### 13. mengintegrasikan pergerakan materila gudang tertutup, terbuka, dan gudang workshop
+#### 14. alur pergerakan material terekap oleh sistem
+#### 15. distribusi informasi real time
+#### 16. notifikasi jika ada inputan update ttg material, baik on delivery, on inspection, material menggunakan nota, material rejected
+#### 17. font merah apabila jumlah akan menyentuh angka minimum stock
+#### 18. Pembagian role sebagai berikut     
+        1. MM => semua fitur
+	    2. Staff Gudang => semua fitur
+	    3. PIC Gudang Workshop => melihat daftar list, mengisi form request, mengupdate list material, mengupdate status material berdasarkan jenis pekerjaan dan juga projectnya
+	    4. Pengadaan => Pengisian penjadwalan kedatangan, menginput dan menghapus dokumen yang dsertakan pada material, list
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<br />
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Material dikirim oleh suplier
+#### 1. Input ke form berupa text dan number
+#### 2. Input dokumen
+#### 3. List muncul
+#### 4. Notifikasi muncul pada sistem
+#### 5. End
 
-## Learning Laravel
+<br />
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Persiapan Kedatangan Material
+#### 1. Masuk ke notif
+#### 2. Pilih menu kedatangan material
+#### 3. Tampil List material yang akan datang
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+<br />
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Material Arrived sampai Put Away
+#### 1. Update status material yang akan datang menjadi arrived
+#### 2. Mengisi form laporan penerimaan barang
+#### 3. download
+#### 4. update material menjadi on inspection
+#### 5. update material accepted dan melampirkan dokumen AN
+#### 6. BPM otomatis terbit pada sistem dan dapat didownload menjadi excel
+#### 7. Input lokasi penyimpanan material
+#### 8. Material otomatis masuk dalam list material inventory
 
-## Laravel Sponsors
+<br />
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+# Penolakan dan Pengembalian material
+#### 1. update status menjadi rejected
+#### 2. notifikasi muncul
+#### 3. update dikembalikan
 
-### Premium Partners
+<br />
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+# Pengeluaran material dari gudang utama dan pemakaian material di gudang workshop
+#### 1. Pilih menu stock material wh worksop
+#### 2. Apabila tersedia, mengisi form, update status, notifikasi, terekap ke db
+#### 3. Apabila tidak tersedia, mengisi form req, muncul notifikasi request
+#### 4. staff gudang material mengisi form BPG di sistem, stock material otomatis terupdate
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+	
