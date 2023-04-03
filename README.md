@@ -1,3 +1,4 @@
+pass admin = $2y$10$Id/SjXBjLdHGINXfMVwG2OmrtkBM1fdIktIIpzTtnJTQBPQX5t9Ei = 123
 
 # Ringkasan Task
 1. Pemakaian Material Gudang Kecil

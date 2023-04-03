@@ -56,6 +56,16 @@
                             </li>
                             @endif
 
+                            @if (Auth::user()->role == 4)
+                            <li class="nav-item">
+                                <a class="nav-link" href="/kedatangan-material"
+                                    style="font-size: 18px; text-align: center">
+                                    <i class="fas fa-plane-arrival" style="font-size: 16px;"></i>
+                                    <span class="nav-link-text ml-2">Kedatangan</span>
+                                </a>
+                            </li>
+                            @endif
+
                             <!-- <hr class="my-2">
 
                             <li class="nav-item dropdown">

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,12 @@ Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
     Route::get('/add-account', [UserController::class, 'add_account'])->name('admin.add-account');
     Route::post('/add-account', [UserController::class, 'add_account_process'])->name('admin.add-account-process');
     
+});
+
+Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
+
+    Route::get('/kedatangan-material', [StaffController::class, 'form_kedatangan_material'])->name('staff.form-kedatangan-material');
+    Route::post('/kedatangan-material', [StaffController::class, 'form_kedatangan_material_process'])->name('staff.form-kedatangan-material-process');
 });
 
 
