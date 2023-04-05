@@ -46,11 +46,6 @@
                                             @endif
 
                                             <div class="form-group">
-                                                <label class="form-control-label" for="input-school">Nama Material</label>
-                                                <input name="nama-material" type="text" class="form-control"  required>
-                                            </div>
-
-                                            <div class="form-group">
                                                 <label class="form-control-label" for="input-school">Nomor PO</label>
                                                 <input name="no-po" type="text" class="form-control"  required>
                                             </div>
@@ -66,12 +61,17 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="form-control-label" for="input-school">Jumlah</label>
+                                                <label class="form-control-label" for="input-school">Nama Material (untuk menginput banyak data, pisahkan dengan tanda koma ',')</label>
+                                                <input name="nama-material" type="text" class="form-control"  required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-school">Jumlah (untuk menginput banyak data, pisahkan dengan tanda koma ',')</label>
                                                 <input name="jumlah" type="text" class="form-control"  required>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="form-control-label" for="input-school">Kode Material</label>
+                                                <label class="form-control-label" for="input-school">Kode Material (untuk menginput banyak data, pisahkan dengan tanda koma ',')</label>
                                                 <input name="kode-material" type="text" class="form-control"  required>
                                             </div>
 

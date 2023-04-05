@@ -60,6 +60,21 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/ganti_pass', [UserController::class, 'ganti_pass_display'])->name('admin.ganti_pass');
     Route::post('/ganti_pass', [UserController::class, 'ganti_pass_process'])->name('admin.ganti_pass_process');
+
+    // ----------------------
+
+    Route::get('/list-kedatangan-material', [StaffController::class, 'list_kedatangan_material'])->name('staff.list-kedatangan-material');
+    Route::get('/kedatangan-material', [StaffController::class, 'form_kedatangan_material'])->name('staff.form-kedatangan-material');
+    Route::post('/kedatangan-material', [StaffController::class, 'form_kedatangan_material_process'])->name('staff.form-kedatangan-material-process');
+
+    Route::get('/list-material-sampai', [StaffController::class, 'list_material_sampai'])->name('staff.list-material-sampai');
+    Route::post('/material-sampai', [StaffController::class, 'material_sampai'])->name('staff.material-sampai');
+
+
+    // ----------------------
+
+    Route::get('/list-notifikasi', [StaffController::class, 'list_notifikasi'])->name('staff.list-notifikasi');
+    Route::get('/checklist_notifikasi/{id}', [StaffController::class, 'checklist_notifikasi'])->name('staff.check_notifikasi');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
@@ -74,14 +89,6 @@ Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
     Route::get('/add-account', [UserController::class, 'add_account'])->name('admin.add-account');
     Route::post('/add-account', [UserController::class, 'add_account_process'])->name('admin.add-account-process');
     
-});
-
-Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
-
-    Route::get('/list-kedatangan-material', [StaffController::class, 'list_kedatangan_material'])->name('staff.list-kedatangan-material');
-
-    Route::get('/kedatangan-material', [StaffController::class, 'form_kedatangan_material'])->name('staff.form-kedatangan-material');
-    Route::post('/kedatangan-material', [StaffController::class, 'form_kedatangan_material_process'])->name('staff.form-kedatangan-material-process');
 });
 
 
