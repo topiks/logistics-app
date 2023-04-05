@@ -11,10 +11,21 @@
 
         <link rel="icon" type="image/png" href="general/images/favicon-bbi.png"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
-        <link rel="stylesheet" href="admin/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
-        <link rel="stylesheet" href="admin/assets/css/argon.css?v=1.2.0" type="text/css">
-        <link rel="stylesheet" href="admin/assets/css/lightbox.min.css" type="text/css">
-        <link rel="stylesheet" href="admin/assets/vendor/datatables/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="/admin/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+        <link rel="stylesheet" href="/admin/assets/css/argon.css?v=1.2.0" type="text/css">
+        <link rel="stylesheet" href="/admin/assets/css/lightbox.min.css" type="text/css">
+        <link rel="stylesheet" href="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.css">
+
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+            $('#dataTable').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+            });
+        </script>
 
     </head>
 
@@ -58,7 +69,7 @@
 
                             @if (Auth::user()->role == 4)
                             <li class="nav-item">
-                                <a class="nav-link" href="/kedatangan-material"
+                                <a class="nav-link" href="/list-kedatangan-material"
                                     style="font-size: 18px; text-align: center">
                                     <i class="fas fa-plane-arrival" style="font-size: 16px;"></i>
                                     <span class="nav-link-text ml-2">Kedatangan</span>
@@ -372,20 +383,20 @@
             </div>
         </div>
 
-        <script src="admin/assets/vendor/jquery/dist/jquery.min.js"></script>
-        <script src="admin/assets//vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="admin/assets//vendor/js-cookie/js.cookie.js"></script>
-        <script src="admin/assets//vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
-        <script src="admin/assets//vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+        <script src="/admin/assets/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/admin/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/admin/assets/vendor/js-cookie/js.cookie.js"></script>
+        <script src="/admin/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+        <script src="/admin/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
         
-        <script src="admin/assets/js/argon.js?v=1.2.0"></script>
+        <script src="/admin/assets/js/argon.js?v=1.2.0"></script>
         
-        <script src="admin/assets/js/lightbox-plus-jquery.min.js"></script>
+        <script src="/admin/assets/js/lightbox-plus-jquery.min.js"></script>
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         
-        <script src="admin/assets//vendor/datatables/jquery.dataTables.js"></script>
-        <script src="admin/assets//vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="/admin/assets/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     </body>
 

@@ -39,6 +39,12 @@
                                             </div>
                                             @endif
 
+                                            @if ($notification = Session::get('success'))
+                                            <div class="alert alert-success" role="alert">
+                                                <strong>{{ $notification }}</strong>
+                                            </div>
+                                            @endif
+
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-school">Nama Material</label>
                                                 <input name="nama-material" type="text" class="form-control"  required>
@@ -80,8 +86,8 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="form-control-label" for="input-school">EDA</label>
-                                                <input name="eda" type="text" class="form-control"  required>
+                                                <label class="form-control-label" for="input-school">Estimasi Pengiriman Sampai</label>
+                                                <input name="eda" type="date" class="form-control"  required>
                                             </div>
 
                                             <div class="form-group">

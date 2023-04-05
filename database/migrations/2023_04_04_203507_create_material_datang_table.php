@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('material_datang', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_material')->autoIncrement();
             $table->string('nama_material');
             $table->string('nomor_po');
             $table->string('nomor_order');
@@ -25,6 +24,7 @@ return new class extends Migration
             $table->string('nomor_spbb_nota');
             $table->string('pemasok');
             $table->string('eda');
+            $table->string('dokumen_material');
             $table->timestamps();
         });
     }
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('material_datang');
     }
 };

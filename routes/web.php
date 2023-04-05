@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
 
 Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
 
+    Route::get('/list-kedatangan-material', [StaffController::class, 'list_kedatangan_material'])->name('staff.list-kedatangan-material');
+
     Route::get('/kedatangan-material', [StaffController::class, 'form_kedatangan_material'])->name('staff.form-kedatangan-material');
     Route::post('/kedatangan-material', [StaffController::class, 'form_kedatangan_material_process'])->name('staff.form-kedatangan-material-process');
 });
