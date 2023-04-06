@@ -71,6 +71,11 @@
                                             </div>
 
                                             <div class="form-group">
+                                                <label class="form-control-label" for="input-school">Satuan (kg, L, dll) (untuk menginput banyak data, pisahkan dengan tanda koma ',')</label>
+                                                <input name="satuan" type="text" class="form-control"  required>
+                                            </div>
+
+                                            <div class="form-group">
                                                 <label class="form-control-label" for="input-school">Kode Material (untuk menginput banyak data, pisahkan dengan tanda koma ',')</label>
                                                 <input name="kode-material" type="text" class="form-control"  required>
                                             </div>

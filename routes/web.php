@@ -43,6 +43,11 @@ Route::post('/reset_pass', [UserController::class, 'set_new_pass'])->name('admin
 
 // ========================================================================
 
+Route::get('/e', [StaffController::class, 'export'])->name('export');
+Route::get('/te', [StaffController::class, 'display_export'])->name('display_export');
+
+// ========================================================================
+
 /*
 |---- 0 = Admin
 |---- 1 = Spy Management Material
@@ -70,11 +75,19 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/list-material-sampai', [StaffController::class, 'list_material_sampai'])->name('staff.list-material-sampai');
     Route::post('/material-sampai', [StaffController::class, 'material_sampai'])->name('staff.material-sampai');
 
-
     // ----------------------
 
     Route::get('/list-notifikasi', [StaffController::class, 'list_notifikasi'])->name('staff.list-notifikasi');
     Route::get('/checklist_notifikasi/{id}', [StaffController::class, 'checklist_notifikasi'])->name('staff.check_notifikasi');
+
+    // ----------------------
+
+    Route::get('/update_status_material/{kode_update}/{id}', [StaffController::class, 'update_status_material'])->name('staff.update-status-material');
+    Route::post('/accept_material', [StaffController::class, 'accept_material'])->name('staff.accept-material');
+
+    // ----------------------
+
+    Route::get('/list_material_inventory', [StaffController::class, 'list_material_inventory'])->name('staff.list-material-inventory');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {

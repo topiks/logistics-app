@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('material_sampai', function (Blueprint $table) {
+        Schema::create('material_inventory', function (Blueprint $table) {
             $table->id();
             $table->string('status');
+            $table->string('lokasi');
             $table->string('nama_material');
             $table->string('nomor_po');
             $table->string('nomor_order');
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->string('pemasok');
             $table->string('eda');
             $table->string('dokumen_material');
+            $table->string('dokumen_an');
             $table->timestamps();
         });
     }
@@ -38,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('material_sampai');
+        Schema::dropIfExists('material_inventory');
     }
 };

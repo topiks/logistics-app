@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nomor_order');
             $table->string('nomor_pr');
             $table->string('jumlah');
+            $table->string('satuan');
             $table->string('kode_material');
             $table->string('nomor_spbb_nota');
             $table->string('pemasok');

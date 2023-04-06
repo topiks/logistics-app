@@ -85,8 +85,20 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/list-material-sampai"
                                     style="font-size: 18px; text-align: center">
-                                    <i class="fas fa-list" style="font-size: 16px;"></i>
-                                    <span class="nav-link-text ml-2">Material</span>
+                                    <i class="fas fa-box-open" style="font-size: 16px;"></i>
+                                    <span class="nav-link-text ml-2">Pengecekan</span>
+                                </a>
+                            </li>
+
+                            <hr class="my-2">
+                            @endif
+
+                            @if (Auth::user()->role == 4 || Auth::user()->role == 3)
+                            <li class="nav-item">
+                                <a class="nav-link" href="/list_material_inventory"
+                                    style="font-size: 18px; text-align: center">
+                                    <i class="fas fa-warehouse" style="font-size: 16px;"></i>
+                                    <span class="nav-link-text ml-2">Inventory</span>
                                 </a>
                             </li>
 
