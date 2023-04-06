@@ -49,11 +49,21 @@ Route::get('/te', [StaffController::class, 'display_export'])->name('display_exp
 // ========================================================================
 
 /*
+|---- ROLE ACCOUNT
 |---- 0 = Admin
 |---- 1 = Spy Management Material
 |---- 2 = Staff Gudang Utama
 |---- 3 = Staff Gudang Workshop
 |---- 4 = Staff Pengadaan
+*/
+
+/*
+|---- STATUS MATERIAL
+|---- 0 = Akan Datang
+|---- 1 = Sampai
+|---- 2 = Accept
+|---- 3 = Reject
+|---- 4 = Dikembalikan
 */
 
 Route::group(['middleware' => ['auth']], function () {
@@ -84,6 +94,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/update_status_material/{kode_update}/{id}', [StaffController::class, 'update_status_material'])->name('staff.update-status-material');
     Route::post('/accept_material', [StaffController::class, 'accept_material'])->name('staff.accept-material');
+    Route::post('/reject_material', [StaffController::class, 'reject_material'])->name('staff.reject-material');
+    Route::post('/return_material', [StaffController::class, 'return_material'])->name('staff.return-material');
 
     // ----------------------
 

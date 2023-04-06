@@ -68,6 +68,10 @@
                                                             <span class="badge badge-pill badge-lg badge-primary">Sampai</span>
                                                         @elseif ($m->status == 1)
                                                             <span class="badge badge-pill badge-lg badge-default">On Inspection</span>
+                                                        @elseif ($m->status == 3)
+                                                            <span class="badge badge-pill badge-lg badge-danger">Ditolak</span>
+                                                        @elseif ($m->status == 4)
+                                                        <span class="badge badge-pill badge-lg badge-info">Dikembalikan</span>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -116,8 +120,12 @@
                                                             <button class="btn btn-md bg-success mr-3" style="color: white;"  data-toggle="modal" data-target="#accept-modal" onclick="accept_material({{ $m->id }});">
                                                                 Accept
                                                             </button>
-                                                            <button class="btn btn-md bg-danger mr-3" style="color: white;"  data-toggle="modal" data-target="#on-inspection" onclick="on_inspection({{ $m->id }});">
+                                                            <button class="btn btn-md bg-danger mr-3" style="color: white;"  data-toggle="modal" data-target="#reject-modal" onclick="reject_material({{ $m->id }});">
                                                                 Reject
+                                                            </button>
+                                                        @elseif ($m->status == 3)
+                                                            <button class="btn btn-md bg-info mr-3" style="color: white;"  data-toggle="modal" data-target="#return-modal" onclick="return_material({{ $m->id }});">
+                                                                Kembalikan
                                                             </button>
                                                         @endif
                                                     </td>
@@ -155,6 +163,28 @@
                     </div>
                 </div>
                 
+            </div>
+        </div>
+    </div>
+    
+    <!-- Rejected -->
+    <div class="modal fade" id="reject-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Tolak Material ?</h3>
+                    <form action="{{ route('staff.reject-material') }}" enctype="multipart/form-data" method="post">
+                        @csrf
+                        <div class="form-group" hidden>
+                            <label class="form-control-label" for="input-school">id</label>
+                            <input id="id_reject_accept" name="id" type="text" class="form-control" required>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="loloskan" href="" type="submit" class="btn btn-danger">Tolak</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -196,6 +226,28 @@
         </div>
     </div>
 
+    <!-- Dikembalikan --><!-- Rejected -->
+    <div class="modal fade" id="return-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Kembalikan Material ?</h3>
+                    <form action="{{ route('staff.return-material') }}" enctype="multipart/form-data" method="post">
+                        @csrf
+                        <div class="form-group" hidden>
+                            <label class="form-control-label" for="input-school">id</label>
+                            <input id="id_return_mat" name="id" type="text" class="form-control" required>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="loloskan" href="" type="submit" class="btn btn-info">Kembalikan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
         function on_inspection(id) {
             document.getElementById('on_ins').setAttribute('href', '/update_status_material/' + '1/' + id);
@@ -203,6 +255,14 @@
 
         function accept_material(id) {
             document.getElementById('id_material_accept').setAttribute('value', id);
+        }
+
+        function reject_material(id) {
+            document.getElementById('id_reject_accept').setAttribute('value', id);
+        }
+
+        function return_material(id) {
+            document.getElementById('id_return_mat').setAttribute('value', id);
         }
     </script>
 

@@ -227,6 +227,47 @@ class StaffController extends Controller
 
     //------------------------------------------------
 
+    public function reject_material(Request $request)
+    {
+        $id = $request->input('id');
+
+        //------------------------
+        
+        $material_sampai = Material_Sampai::find($id);
+        $material_sampai->status = 3;
+        $material_sampai->save();
+
+        //------------------------
+
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "menolak material " . $material_sampai->nama_material . " dengan nomor PO " . $material_sampai->nomor_po;
+        $notifikasi->save();
+
+        //------------------------
+
+        return redirect()->route('staff.list-material-sampai')->with('success', 'Data Material berhasil ditolak');
+    }
+
+    //------------------------------------------------
+
+    public function return_material(Request $request)
+    {
+        $id = $request->input('id');
+
+        //------------------------
+
+        $material_sampai = Material_Sampai::find($id);
+        $material_sampai->status = 4;
+        $material_sampai->save();
+
+        //------------------------
+
+        return redirect()->route('staff.list-material-sampai')->with('success', 'Data Material berhasil dikembalikan');
+    }
+
+    //------------------------------------------------
+
     public function list_material_inventory()
     {
         $material_inventory = Material_Inventory::all();
