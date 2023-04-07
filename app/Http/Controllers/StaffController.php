@@ -16,6 +16,8 @@ use App\Models\User;
 use App\Models\Material_Datang;
 use App\Models\Material_Sampai;
 use App\Models\Material_Inventory;
+use App\Models\Penggunaan_Material_Buffer;
+use App\Models\Penggunaan_Material;
 use App\Models\Notifikasi;
 
 use App\Mail\MyMail;
@@ -196,27 +198,54 @@ class StaffController extends Controller
     {
         $id = $request->input('id');
         $lokasi = $request->input('tempat-penyimpanan');
+        
+        // ----------------------------
 
         $material_sampai = Material_Sampai::find($id);
-        
-        $material_inventory = new Material_Inventory;
-        $material_inventory->status = 2;
-        $material_inventory->lokasi = $lokasi;
-        $material_inventory->nama_material = $material_sampai->nama_material;
-        $material_inventory->nomor_po = $material_sampai->nomor_po;
-        $material_inventory->nomor_order = $material_sampai->nomor_order;
-        $material_inventory->nomor_pr = $material_sampai->nomor_pr;
-        $material_inventory->jumlah = $material_sampai->jumlah;
-        $material_inventory->satuan = $material_sampai->satuan;
-        $material_inventory->kode_material = $material_sampai->kode_material;
-        $material_inventory->nomor_spbb_nota = $material_sampai->nomor_spbb_nota;
-        $material_inventory->pemasok = $material_sampai->pemasok;
-        $material_inventory->eda = $material_sampai->eda;
-        $material_inventory->dokumen_material = $material_sampai->dokumen_material;
-        $material_inventory->dokumen_an = $request->file('file-an')->getClientOriginalName();
-        $material_inventory->save();
+
+        // ----------------------------
+
+        $nama_material = array();
+        $jumlah_material = array();
+        $kode_material = array();
+        $satuan = array();
+
+        // ----------------------------
+
+        $nama_material[] = explode(',', $material_sampai->nama_material);
+        $jumlah_material[] = explode(',', $material_sampai->jumlah);
+        $kode_material[] = explode(',', $material_sampai->kode_material);
+        $satuan[] = explode(',', $material_sampai->satuan);
+
+        // ----------------------------
+
+        $len = count($nama_material[0]);
+        for($i = 0; $i < $len; $i++)
+        {
+            $material_inventory = new Material_Inventory;
+            $material_inventory->status = 2;
+            $material_inventory->lokasi = $lokasi;
+            $material_inventory->nama_material = $nama_material[0][$i];
+            $material_inventory->nomor_po = $material_sampai->nomor_po;
+            $material_inventory->nomor_order = $material_sampai->nomor_order;
+            $material_inventory->nomor_pr = $material_sampai->nomor_pr;
+            $material_inventory->jumlah = $jumlah_material[0][$i];
+            $material_inventory->satuan = $satuan[0][$i];
+            $material_inventory->kode_material = $kode_material[0][$i];
+            $material_inventory->nomor_spbb_nota = $material_sampai->nomor_spbb_nota;
+            $material_inventory->pemasok = $material_sampai->pemasok;
+            $material_inventory->eda = $material_sampai->eda;
+            $material_inventory->dokumen_material = $material_sampai->dokumen_material;
+            $material_inventory->dokumen_an = $request->file('file-an')->getClientOriginalName();
+
+            $material_inventory->save();
+        }
+
+        // ----------------------------
 
         $material_sampai->delete();
+
+        // ----------------------------
 
         if($request->file('file-an')->storeAs('public/acceptance_notice', $request->file('file-an')->getClientOriginalName()))
             return redirect()->route('staff.list-material-inventory')->with('success', 'Data Material berhasil diterima');
@@ -272,31 +301,162 @@ class StaffController extends Controller
     {
         $material_inventory = Material_Inventory::all();
 
+        return view('staff.list_material_inventory', compact('material_inventory'));
+    }
+
+    // ------------------------------------------------
+
+    public function form_penggunaan_material()
+    {
+        $material_inventory = Material_Inventory::all();
+        $penggunaan_material_buffer = Penggunaan_Material_Buffer::all();
+        $len = count($penggunaan_material_buffer);
+
+        return view('staff.form_penggunaan_material', compact('material_inventory', 'penggunaan_material_buffer', 'len'));
+    }
+
+    // ------------------------------------------------
+
+    public function form_penggunaan_material_buffer_process(Request $request)
+    {
+        $id = $request->input('id_material_terpilih');
+        $jumlah_akan_digunakan = $request->input('jumlah_material');
+
+        // ----------------------------
+
+        $material_inventory = Material_Inventory::find($id);
+        $penggunaan_material_buffer = new Penggunaan_Material_Buffer;
+
+        // ----------------------------
+
+        $penggunaan_material_buffer->nama_material = $material_inventory->nama_material;
+        $penggunaan_material_buffer->kode_material = $material_inventory->kode_material;
+        $penggunaan_material_buffer->satuan = $material_inventory->satuan;
+        $penggunaan_material_buffer->jumlah_akan_digunakan = $jumlah_akan_digunakan;
+
+        // ----------------------------
+
+        $penggunaan_material_buffer->save();
+        return redirect()->route('staff.form-penggunaan-material')->with('success', 'Data Material berhasil ditambahkan');
+
+    }
+
+    // ------------------------------------------------
+
+    public function hapus_penggunaan_material_raw($id)
+    {
+        $penggunaan_material_buffer = Penggunaan_Material_Buffer::find($id);
+        $penggunaan_material_buffer->delete();
+
+        return redirect()->route('staff.form-penggunaan-material')->with('success', 'Data Material berhasil dihapus');
+    }
+
+    // ------------------------------------------------
+
+    public function form_penggunaan_material_process()
+    {
+        $penggunaan_material_buffer = Penggunaan_Material_Buffer::all();
+
         $nama_material = array();
-        $jumlah_material = array();
+        $jumlah_akan_digunakan = array();
         $kode_material = array();
         $satuan = array();
 
-        foreach($material_inventory as $mi)
-        {        
-            $nama_material[] = explode(',', $mi->nama_material);
-            $jumlah_material[] = explode(',', $mi->jumlah);
-            $kode_material[] = explode(',', $mi->kode_material);
-            $satuan[] = explode(',', $mi->satuan);
+        // ----------------------------
+
+        foreach ($penggunaan_material_buffer as $key => $value) {
+            $nama_material[] = $value->nama_material;
+            $jumlah_akan_digunakan[] = $value->jumlah_akan_digunakan;
+            $kode_material[] = $value->kode_material;
+            $satuan[] = $value->satuan;
         }
 
+        // ----------------------------
+
+        $material_inventory = Material_Inventory::all();
+
+        foreach ($material_inventory as $key => $value) {
+            for ($i=0; $i < count($kode_material); $i++) { 
+                if($value->kode_material == $kode_material[$i] && $value->nama_material == $nama_material[$i]){
+                    $value->jumlah = $value->jumlah - $jumlah_akan_digunakan[$i];
+                    if ($value->jumlah < 0) {
+                        return redirect()->route('staff.form-penggunaan-material')->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
+                    }
+                    else 
+                    {
+                        $value->save();
+                    }
+                }
+            }
+        }
+
+        // ----------------------------
+        
+        $nama_material = implode(",", $nama_material);
+        $jumlah_akan_digunakan = implode(",", $jumlah_akan_digunakan);
+        $kode_material = implode(",", $kode_material);
+        $satuan = implode(",", $satuan);
+
+        // ----------------------------
+
+        $penggunaan_material = new Penggunaan_Material;
+        $penggunaan_material->nama_material = $nama_material;
+        $penggunaan_material->jumlah_yang_dipinjam = $jumlah_akan_digunakan;
+        $penggunaan_material->kode_material = $kode_material;
+        $penggunaan_material->satuan = $satuan;
+        $penggunaan_material->save();
+
+        // ----------------------------
+
+        $penggunaan_material_buffer->each->delete();
+
+        // ----------------------------
+
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "menggunakan material " . $nama_material . " dengan kode " . $kode_material . " sebanyak " . $jumlah_akan_digunakan . " " . $satuan;
+        $notifikasi->save();
+
+        // ----------------------------
+
+        return redirect()->route('staff.list-penggunaan-material')->with('success', 'Data Penggunaan Material berhasil ditambahkan');
+    }
+
+    // ------------------------------------------------
+
+    public function list_penggunaan_material()
+    {
+        $penggunaan_material = Penggunaan_Material::all();
+
+        $nama_material = array();
+        $jumlah_yang_dipinjam = array();
+        $kode_material = array();
+        $satuan = array();
+
+        // ----------------------------
+
+        foreach ($penggunaan_material as $key => $value) {
+            $nama_material[] = explode(",", $value->nama_material);
+            $jumlah_yang_dipinjam[] = explode(",", $value->jumlah_yang_dipinjam);
+            $kode_material[] = explode(",", $value->kode_material);
+            $satuan[] = explode(",", $value->satuan);
+        }
+
+        // ----------------------------
+
         $i = 0;
-        foreach($material_inventory as $mi)
-        {
-            $mi->nama_material = $nama_material[$i];
-            $mi->jumlah = $jumlah_material[$i];
-            $mi->kode_material = $kode_material[$i];
-            $mi->satuan = $satuan[$i];
+        foreach ($penggunaan_material as $key => $value) {
+            $value->nama_material = $nama_material[$i];
+            $value->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[$i];
+            $value->kode_material = $kode_material[$i];
+            $value->satuan = $satuan[$i];
             $i++;
         }
 
-        return view('staff.list_material_inventory', compact('material_inventory'));
+        return view('staff.list_penggunaan_material', compact('penggunaan_material'));
     }
+
+    // ------------------------------------------------
 
     public function export()
     {

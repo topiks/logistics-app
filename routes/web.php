@@ -59,8 +59,8 @@ Route::get('/te', [StaffController::class, 'display_export'])->name('display_exp
 
 /*
 |---- STATUS MATERIAL
-|---- 0 = Akan Datang
-|---- 1 = Sampai
+|---- 0 = Sampai
+|---- 1 = On Inspection
 |---- 2 = Accept
 |---- 3 = Reject
 |---- 4 = Dikembalikan
@@ -100,6 +100,14 @@ Route::group(['middleware' => ['auth']], function () {
     // ----------------------
 
     Route::get('/list_material_inventory', [StaffController::class, 'list_material_inventory'])->name('staff.list-material-inventory');
+    Route::get('/form_penggunaan_material', [StaffController::class, 'form_penggunaan_material'])->name('staff.form-penggunaan-material');
+    Route::post('/form_penggunaan_material', [StaffController::class, 'form_penggunaan_material_buffer_process'])->name('staff.form-penggunaan-material-buffer-process');
+    Route::get('/hapus_penggunaan_material_raw/{id}', [StaffController::class, 'hapus_penggunaan_material_raw'])->name('staff.hapus-penggunaan-material-raw');
+
+    // ----------------------
+
+    Route::get('/form_penggunaan_material_process', [StaffController::class, 'form_penggunaan_material_process'])->name('staff.form-penggunaan-material-process');
+    Route::get('/list_penggunaan_material', [StaffController::class, 'list_penggunaan_material'])->name('staff.list-penggunaan-material');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {

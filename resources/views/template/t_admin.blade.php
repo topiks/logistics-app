@@ -105,6 +105,18 @@
                             <hr class="my-2">
                             @endif
 
+                            @if (Auth::user()->role == 4 || Auth::user()->role == 3)
+                            <li class="nav-item">
+                                <a class="nav-link" href="/list_penggunaan_material"
+                                    style="font-size: 18px; text-align: center">
+                                    <i class="fas fa-handshake" style="font-size: 16px;"></i>
+                                    <span class="nav-link-text ml-2">Penggunaan</span>
+                                </a>
+                            </li>
+
+                            <hr class="my-2">
+                            @endif
+
                             @if (Auth::user()->role != 0)
                             <li class="nav-item">
                                 <a class="nav-link" href="/list-notifikasi"

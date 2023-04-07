@@ -10,7 +10,7 @@
                 <div class="col-lg-6 col-7">
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block ">
                         <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                            <li class="breadcrumb-item"><a href="#" style="color: #172B4D">List Material Inventory</a></li>
+                            <li class="breadcrumb-item"><a href="#" style="color: #172B4D">List Penggunaan Material</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -25,15 +25,6 @@
         <div class="col-12" style="width: 100%;">
             <div class="card" style="width: 100%;">
                 <div class="card-body">
-
-                    @if (Auth::user()->role == 3)
-                    <h5 class="card-title" style="font-size: xx-large; text-align: left;">
-                        <a href="/form_penggunaan_material" class="">
-                            <button class="btn btn-md bg-primary" style="color: white;">
-                            <i class="fas fa-plus" style="font-size: 16px;"></i> Form Penggunaan Material</button>
-                        </a>
-                    </h5>
-                    @endif
 
                     <div class="row">
                         <div class="col">
@@ -55,34 +46,36 @@
                                                     <th>Jumlah</th>
                                                     <th>Satuan</th>
                                                     <th>Kode Material</th>
-                                                    <th>Lokasi Penyimpanan</th>
-                                                    <th>Dokumen Acceptance Notice</th>
+                                                    <th>Waktu Peminjaman</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php $no = 0; ?>
-                                                @foreach ($material_inventory as $m)
+                                                @foreach ($penggunaan_material as $m)
                                                 <tr>
                                                     <?php $no++; ?>
                                                     <td><?= $no; ?></td>
                                                     <td>
-                                                        {{$m->nama_material}}
+                                                        @foreach ($m->nama_material as $nm)
+                                                            <li>{{$nm}}</li>
+                                                        @endforeach
                                                     </td>
                                                     <td>
-                                                        {{$m->jumlah}}
+                                                        @foreach($m->jumlah_yang_dipinjam as $j)
+                                                            <li>{{$j}}</li>
+                                                        @endforeach
                                                     </td>
                                                     <td>
-                                                        {{$m->satuan}}
+                                                        @foreach($m->satuan as $s)
+                                                            <li>{{$s}}</li>
+                                                        @endforeach
                                                     </td>
                                                     <td>
-                                                        {{$m->kode_material}}
+                                                        @foreach($m->kode_material as $k)
+                                                            <li>{{$k}}</li>
+                                                        @endforeach
                                                     </td>
-                                                    <td>{{$m->lokasi}}</td>
-                                                    <td>
-                                                        <button class="btn btn-md bg-primary mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
-                                                            Acceptance Notice
-                                                        </button>
-                                                    </td>
+                                                    <td>{{ $m->created_at }}</td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
@@ -101,6 +94,5 @@
             </div>
         </div>
     </div>
-
 
 @endsection
