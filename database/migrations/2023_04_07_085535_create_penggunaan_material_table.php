@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('penggunaan_material', function (Blueprint $table) {
             $table->id();
             $table->string('nama_material');
+            $table->integer('status');
+            $table->string('spesifikasi');
             $table->string('kode_material');
             $table->string('satuan');
             $table->string('jumlah_yang_dipinjam');

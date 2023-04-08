@@ -108,9 +108,12 @@
                                                         </a>
                                                     </td>
                                                     <td>
+                                                    @if (Auth::user()->role == 1 || Auth::user()->role == 2)
+                                                        @if ($m->status != 4)
                                                         <button class="btn btn-md bg-primary mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
                                                             LPB
                                                         </button>
+                                                        @endif
 
                                                         @if ($m->status == 0)
                                                             <button class="btn btn-md bg-default mr-3" style="color: white;"  data-toggle="modal" data-target="#on-inspection" onclick="on_inspection({{ $m->id }});">
@@ -128,6 +131,7 @@
                                                                 Kembalikan
                                                             </button>
                                                         @endif
+                                                    @endif
                                                     </td>
                                                 </tr>
                                                 @endforeach

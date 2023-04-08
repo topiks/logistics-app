@@ -10,7 +10,7 @@
                 <div class="col-lg-6 col-7">
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block ">
                         <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                            <li class="breadcrumb-item"><a href="#" style="color: #172B4D">List Material Inventory</a></li>
+                            <li class="breadcrumb-item"><a href="#" style="color: #172B4D">List Inventory Gudang Besar</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -30,7 +30,12 @@
                     <h5 class="card-title" style="font-size: xx-large; text-align: left;">
                         <a href="/form_penggunaan_material" class="">
                             <button class="btn btn-md bg-primary" style="color: white;">
-                            <i class="fas fa-plus" style="font-size: 16px;"></i> Form Penggunaan Material</button>
+                            <i class="fas fa-plus" style="font-size: 16px;"></i> Form Penggunaan Material ke Gudang Kecil</button>
+                        </a>
+
+                        <a href="/form_request_restock_material_raw" class="">
+                            <button class="btn btn-md bg-warning" style="color: white;">
+                            <i class="fas fa-exclamation" style="font-size: 16px;"></i> Request Pengambilan Stock Material</button>
                         </a>
                     </h5>
                     @endif
@@ -56,6 +61,7 @@
                                                     <th>Satuan</th>
                                                     <th>Kode Material</th>
                                                     <th>Lokasi Penyimpanan</th>
+                                                    <th>Aksi</th>
                                                     <th>Dokumen Acceptance Notice</th>
                                                 </tr>
                                             </thead>
@@ -79,6 +85,13 @@
                                                     </td>
                                                     <td>{{$m->lokasi}}</td>
                                                     <td>
+                                                        @if (Auth::user()->role == 1 || Auth::user()->role == 2)
+                                                        <button class="btn btn-md bg-warning mr-3" style="color: white;"  data-toggle="modal" data-target="#update-stock" onclick="update_stock({{ $m->id }}, {{ $m->jumlah }});">
+                                                            Update Stock
+                                                        </button>
+                                                        @endif
+                                                    </td>
+                                                    <td>
                                                         <button class="btn btn-md bg-primary mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
                                                             Acceptance Notice
                                                         </button>
@@ -101,6 +114,40 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="update-stock" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Update Stock Material</h3>
+                    <form action="{{ route('staff.update-stock-material_inventory') }}" enctype="multipart/form-data" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-stock">Stock</label>
+                            <input id="stock" name="stock" type="text" class="form-control" required>
+                        </div>
+
+                        <div class="form-group" hidden>
+                            <label class="form-control-label" for="input-school">id</label>
+                            <input id="id_material" name="id" type="text" class="form-control" required>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="loloskan" href="" type="submit" class="btn btn-warning">Update</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function update_stock(id, jumlah) {
+            document.getElementById('id_material').value = id;
+            document.getElementById('stock').value = jumlah;
+        }
+
+    </script>
 
 
 @endsection

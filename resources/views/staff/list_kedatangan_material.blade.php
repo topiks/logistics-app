@@ -105,11 +105,14 @@
                                                             </button>
                                                         </a>
                                                     </td>
+
+                                                    @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                                                     <td>
                                                         <button class="btn btn-md bg-success mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
                                                             Sampai
                                                         </button>
                                                     </td>
+                                                    @endif
                                                 </tr>
                                                 @endforeach
                                             </tbody>

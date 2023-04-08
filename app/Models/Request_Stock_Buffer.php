@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penggunaan_Material extends Model
+class Request_Stock_Buffer extends Model
 {
     use HasFactory;
 
-    protected $table = 'penggunaan_material';
+    protected $table = 'request_stock_buffer';
 
     protected $fillable = [
         'nama_material',
-        'status',
-        'spesifikasi',
         'kode_material',
-        'satuan',
-        'jumlah_yang_dipinjam',
     ];
 }

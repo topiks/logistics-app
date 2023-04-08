@@ -13,6 +13,7 @@ class Penggunaan_Material_Buffer extends Model
 
     protected $fillable = [
         'nama_material',
+        'spesifikasi',
         'kode_material',
         'satuan',
         'jumlah_akan_digunakan',

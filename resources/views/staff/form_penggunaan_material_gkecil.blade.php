@@ -1,7 +1,8 @@
 @extends('template/t_admin')
-@section('title', 'Form Penggunaan Material | BBI Warehouse Materal System')
+@section('title', 'Form Penggunaan Material Gudang Kecil | BBI Warehouse Materal System')
 
 @section('container')
+
 <div class="header bg-default pb-6">
         <div class="container-fluid">
             <div class="header-body">
@@ -9,7 +10,7 @@
                     <div class="col-lg-6 col-7">
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                                <li class="breadcrumb-item"><a style="color: #172B4D">Form Penggunaan Material</a></li>
+                                <li class="breadcrumb-item"><a style="color: #172B4D">Form Penggunaan Material Gudang Kecil</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -73,7 +74,7 @@
                                                 <label class="form-control-label" for="input-nama-material">Nama Material</label>
                                                 <select name="id_material_terpilih" class="custom-select custom-select-lg mb-3" required>
                                                     <option hidden disabled selected>-- Pilih Material --</option>
-                                                    @foreach($material_inventory as $m)
+                                                    @foreach($penggunaan_material as $m)
                                                         <option value="{{$m->id}}">Nama : {{$m->nama_material}} | Kode : {{$m->kode_material}} | Stock : {{$m->jumlah}} {{$m->satuan}}</option>
                                                     @endforeach
                                                 </select>
@@ -102,19 +103,4 @@
             </div>
         </div>
 
-    <div class="modal fade" id="gunakan-material-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h3 class="mt-3">Gunakan Material ?</h3>
-                </div>
-                <div class="modal-footer">
-                    <a href="/form_penggunaan_material_process">
-                        <button id="loloskan" href="" type="submit" class="btn btn-primary">Gunakan</button>
-                    </a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection

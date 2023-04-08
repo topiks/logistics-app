@@ -66,6 +66,26 @@ Route::get('/te', [StaffController::class, 'display_export'])->name('display_exp
 |---- 4 = Dikembalikan
 */
 
+/*
+|---- STATUS PENGGUNAAN MATERIAL OLEH GUDANG KECIL
+|---- 0 = Belum Acc
+|---- 1 = Acc
+|---- 2 = Reject
+*/
+
+/*
+|---- STATUS PENGGUNAAN MATERIAL
+|---- 0 = Penggunaan ke Gudang Kecil
+|---- 1 = Penggunaan ke Staff Pekerja
+*/
+
+/*
+|---- STATUS REQUEST RESTOCK
+|---- 0 = Belum Acc
+|---- 1 = Acc
+|---- 2 = Reject
+*/
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');    
 
@@ -100,14 +120,35 @@ Route::group(['middleware' => ['auth']], function () {
     // ----------------------
 
     Route::get('/list_material_inventory', [StaffController::class, 'list_material_inventory'])->name('staff.list-material-inventory');
+    Route::post('update_stock_material_inventory', [StaffController::class, 'update_stock_material_inventory'])->name('staff.update-stock-material_inventory');
     Route::get('/form_penggunaan_material', [StaffController::class, 'form_penggunaan_material'])->name('staff.form-penggunaan-material');
     Route::post('/form_penggunaan_material', [StaffController::class, 'form_penggunaan_material_buffer_process'])->name('staff.form-penggunaan-material-buffer-process');
     Route::get('/hapus_penggunaan_material_raw/{id}', [StaffController::class, 'hapus_penggunaan_material_raw'])->name('staff.hapus-penggunaan-material-raw');
 
     // ----------------------
 
+    Route::post('/acc_penggunaan_gudang_kecil', [StaffController::class, 'acc_penggunaan_gudang_kecil'])->name('staff.acc-penggunaan-gudang-kecil');
+    Route::post('/reject_penggunaan_gudang_kecil', [StaffController::class, 'reject_penggunaan_gudang_kecil'])->name('staff.reject-penggunaan-gudang-kecil');
+
+    // ----------------------
+
+    Route::get('/form_request_restock_material_raw', [StaffController::class, 'form_request_restock_material_raw'])->name('staff.form-request-restock-material-raw');
+    Route::post('/form_request_restock_material_raw', [StaffController::class, 'form_request_restock_material_raw_process'])->name('staff.form-request-restock-material-raw-process');
+    Route::get('/hapus_request_restock_material_raw/{id}', [StaffController::class, 'hapus_request_restock_material_raw'])->name('staff.hapus-request-restock-material-raw');
+
+    // ----------------------
+
     Route::get('/form_penggunaan_material_process', [StaffController::class, 'form_penggunaan_material_process'])->name('staff.form-penggunaan-material-process');
     Route::get('/list_penggunaan_material', [StaffController::class, 'list_penggunaan_material'])->name('staff.list-penggunaan-material');
+
+    Route::get('/form_request_restock_material', [StaffController::class, 'form_request_restock_material'])->name('staff.form-request-restock-material');
+    Route::get('/list_request_restock_material', [StaffController::class, 'list_request_restock_material_raw'])->name('staff.list-request-restock-material');
+    Route::post('/acc_request_restock_material', [StaffController::class, 'acc_request_restock_material'])->name('staff.acc-request-restock-material');
+    Route::post('/reject_request_restock_material', [StaffController::class, 'reject_request_restock_material'])->name('staff.reject-request-restock-material');
+
+    // ----------------------
+
+    Route::get('/form_penggunaan_material_gudang_kecil', [StaffController::class, 'form_penggunaan_material_gudang_kecil'])->name('staff.form-penggunaan-material-gudang-kecil');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {

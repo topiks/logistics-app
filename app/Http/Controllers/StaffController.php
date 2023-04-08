@@ -18,6 +18,8 @@ use App\Models\Material_Sampai;
 use App\Models\Material_Inventory;
 use App\Models\Penggunaan_Material_Buffer;
 use App\Models\Penggunaan_Material;
+use App\Models\Request_Stock_Buffer;
+use App\Models\Request_Stock;
 use App\Models\Notifikasi;
 
 use App\Mail\MyMail;
@@ -306,10 +308,28 @@ class StaffController extends Controller
 
     // ------------------------------------------------
 
+    public function update_stock_material_inventory(Request $request)
+    {
+        $id = $request->input('id');
+        $jumlah = $request->input('stock');
+
+        // ----------------------------
+
+        $material_inventory = Material_Inventory::find($id);
+        $material_inventory->jumlah = $jumlah;
+        $material_inventory->save();
+
+        // ----------------------------
+
+        return redirect()->route('staff.list-material-inventory')->with('success', 'Data Material berhasil diubah');
+    }
+
+    // ------------------------------------------------
+
     public function form_penggunaan_material()
     {
         $material_inventory = Material_Inventory::all();
-        $penggunaan_material_buffer = Penggunaan_Material_Buffer::all();
+        $penggunaan_material_buffer = Penggunaan_Material_Buffer::where('status', 0)->get();
         $len = count($penggunaan_material_buffer);
 
         return view('staff.form_penggunaan_material', compact('material_inventory', 'penggunaan_material_buffer', 'len'));
@@ -321,6 +341,7 @@ class StaffController extends Controller
     {
         $id = $request->input('id_material_terpilih');
         $jumlah_akan_digunakan = $request->input('jumlah_material');
+        $spesifikasi = $request->input('spesifikasi');
 
         // ----------------------------
 
@@ -330,6 +351,8 @@ class StaffController extends Controller
         // ----------------------------
 
         $penggunaan_material_buffer->nama_material = $material_inventory->nama_material;
+        $penggunaan_material_buffer->status = 0;
+        $penggunaan_material_buffer->spesifikasi = $spesifikasi;
         $penggunaan_material_buffer->kode_material = $material_inventory->kode_material;
         $penggunaan_material_buffer->satuan = $material_inventory->satuan;
         $penggunaan_material_buffer->jumlah_akan_digunakan = $jumlah_akan_digunakan;
@@ -355,9 +378,10 @@ class StaffController extends Controller
 
     public function form_penggunaan_material_process()
     {
-        $penggunaan_material_buffer = Penggunaan_Material_Buffer::all();
+        $penggunaan_material_buffer = Penggunaan_Material_Buffer::where('status', 0)->get();
 
         $nama_material = array();
+        $spesifikasi = array();
         $jumlah_akan_digunakan = array();
         $kode_material = array();
         $satuan = array();
@@ -366,6 +390,7 @@ class StaffController extends Controller
 
         foreach ($penggunaan_material_buffer as $key => $value) {
             $nama_material[] = $value->nama_material;
+            $spesifikasi[] = $value->spesifikasi;
             $jumlah_akan_digunakan[] = $value->jumlah_akan_digunakan;
             $kode_material[] = $value->kode_material;
             $satuan[] = $value->satuan;
@@ -382,10 +407,6 @@ class StaffController extends Controller
                     if ($value->jumlah < 0) {
                         return redirect()->route('staff.form-penggunaan-material')->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
                     }
-                    else 
-                    {
-                        $value->save();
-                    }
                 }
             }
         }
@@ -393,6 +414,7 @@ class StaffController extends Controller
         // ----------------------------
         
         $nama_material = implode(",", $nama_material);
+        $spesifikasi = implode(",", $spesifikasi);
         $jumlah_akan_digunakan = implode(",", $jumlah_akan_digunakan);
         $kode_material = implode(",", $kode_material);
         $satuan = implode(",", $satuan);
@@ -401,6 +423,8 @@ class StaffController extends Controller
 
         $penggunaan_material = new Penggunaan_Material;
         $penggunaan_material->nama_material = $nama_material;
+        $penggunaan_material->status = 0;
+        $penggunaan_material->spesifikasi = $spesifikasi;
         $penggunaan_material->jumlah_yang_dipinjam = $jumlah_akan_digunakan;
         $penggunaan_material->kode_material = $kode_material;
         $penggunaan_material->satuan = $satuan;
@@ -414,7 +438,7 @@ class StaffController extends Controller
 
         $notifikasi = new Notifikasi;
         $notifikasi->user_input = Auth::user()->username;
-        $notifikasi->kegiatan = "menggunakan material " . $nama_material . " dengan kode " . $kode_material . " sebanyak " . $jumlah_akan_digunakan . " " . $satuan;
+        $notifikasi->kegiatan = "meminta menggunakan material " . $nama_material . " dengan kode " . $kode_material . " sebanyak " . $jumlah_akan_digunakan . " " . $satuan . " ke gudang kecil";
         $notifikasi->save();
 
         // ----------------------------
@@ -429,6 +453,7 @@ class StaffController extends Controller
         $penggunaan_material = Penggunaan_Material::all();
 
         $nama_material = array();
+        $spesifikasi = array();
         $jumlah_yang_dipinjam = array();
         $kode_material = array();
         $satuan = array();
@@ -437,6 +462,7 @@ class StaffController extends Controller
 
         foreach ($penggunaan_material as $key => $value) {
             $nama_material[] = explode(",", $value->nama_material);
+            $spesifikasi[] = explode(",", $value->spesifikasi);
             $jumlah_yang_dipinjam[] = explode(",", $value->jumlah_yang_dipinjam);
             $kode_material[] = explode(",", $value->kode_material);
             $satuan[] = explode(",", $value->satuan);
@@ -447,6 +473,7 @@ class StaffController extends Controller
         $i = 0;
         foreach ($penggunaan_material as $key => $value) {
             $value->nama_material = $nama_material[$i];
+            $value->spesifikasi = $spesifikasi[$i];
             $value->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[$i];
             $value->kode_material = $kode_material[$i];
             $value->satuan = $satuan[$i];
@@ -454,6 +481,229 @@ class StaffController extends Controller
         }
 
         return view('staff.list_penggunaan_material', compact('penggunaan_material'));
+    }
+
+    // ------------------------------------------------
+
+    public function acc_penggunaan_gudang_kecil(Request $request)
+    {
+        $id = $request->input('id');
+        $penggunaan_material = Penggunaan_Material::find($id);
+        $jumlah_yang_dipinjam = $penggunaan_material->jumlah_yang_dipinjam;
+
+        $penggunaan_material->status = 1;
+        $penggunaan_material->save();
+
+        // ----------------------------
+
+        $nama_material = array();
+        $spesifikasi = array();
+        $jumlah_yang_dipinjam = array();
+        $kode_material = array();
+        $satuan = array();
+
+        $nama_material[] = explode(",", $penggunaan_material->nama_material);
+        $spesifikasi[] = explode(",", $penggunaan_material->spesifikasi);
+        $jumlah_yang_dipinjam[] = explode(",", $penggunaan_material->jumlah_yang_dipinjam);
+        $kode_material[] = explode(",", $penggunaan_material->kode_material);
+        $satuan[] = explode(",", $penggunaan_material->satuan);
+
+        // ----------------------------
+
+        $material_inventory = Material_Inventory::all();
+
+        foreach ($material_inventory as $key => $value) {
+            for ($i=0; $i < count($kode_material); $i++) { 
+                if($value->kode_material == $kode_material[0][$i] && $value->nama_material == $nama_material[0][$i]){
+                    $value->jumlah = $value->jumlah - $jumlah_yang_dipinjam[0][$i];
+                    if ($value->jumlah < 0) {
+                        return redirect()->route('staff.list-penggunaan-material')->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
+                    }
+                    else{
+                        $value->save();
+                    }
+                }
+            }
+        }
+        
+        // ----------------------------
+
+        return redirect()->route('staff.list-penggunaan-material')->with('success', 'Penggunaan Material berhasil disetujui');
+    }
+
+    // ------------------------------------------------
+
+    public function reject_penggunaan_gudang_kecil(Request $request)
+    {
+        $id = $request->input('id');
+        $penggunaan_material = Penggunaan_Material::find($id);
+
+        $penggunaan_material->status = 2;
+        $penggunaan_material->save();
+
+        return redirect()->route('staff.list-penggunaan-material')->with('success', 'Penggunaan Material berhasil ditolak');
+
+    }
+
+    // ------------------------------------------------
+
+    public function form_request_restock_material_raw()
+    {
+        $material_inventory = Material_Inventory::all();
+        $request_stock_buffer = Request_Stock_Buffer::all();
+        $len = count($request_stock_buffer);
+
+        return view('staff.form_request_restock_material', compact('material_inventory', 'request_stock_buffer', 'len'));
+    }
+
+    // ------------------------------------------------
+
+    public function form_request_restock_material_raw_process(Request $request)
+    {
+        $id = $request->input('id_material_terpilih');
+
+        // ----------------------------
+
+        $material_inventory = Material_Inventory::find($id);
+        $request_stock_buffer = new Request_Stock_Buffer;
+
+        // ----------------------------
+
+        $request_stock_buffer->nama_material = $material_inventory->nama_material;
+        $request_stock_buffer->kode_material = $material_inventory->kode_material;
+        $request_stock_buffer->save();
+
+        // ----------------------------
+
+        return redirect()->route('staff.form-request-restock-material-raw')->with('success', 'Data Material berhasil ditambahkan');
+    }
+
+    // ------------------------------------------------
+
+    public function hapus_request_restock_material_raw($id)
+    {
+        $request_stock_buffer = Request_Stock_Buffer::find($id);
+        $request_stock_buffer->delete();
+
+        return redirect()->route('staff.form-request-restock-material-raw')->with('success', 'Data Material berhasil dihapus');
+    }
+
+    // ------------------------------------------------
+
+    public function form_request_restock_material()
+    {
+        $request_stock_buffer = Request_Stock_Buffer::all();
+
+        $nama_material = array();
+        $kode_material = array();
+
+        // ----------------------------
+
+        foreach ($request_stock_buffer as $key => $value) {
+            $nama_material[] = $value->nama_material;
+            $kode_material[] = $value->kode_material;
+        }
+
+        // ----------------------------
+
+        $nama_material = implode(",", $nama_material);
+        $kode_material = implode(",", $kode_material);
+
+        // ----------------------------
+
+        $request_stock = new Request_Stock;
+        $request_stock->status = 0;
+        $request_stock->nama_material = $nama_material;
+        $request_stock->kode_material = $kode_material;
+        $request_stock->save();
+
+        // ----------------------------
+
+        $request_stock_buffer->each->delete();
+
+        // ----------------------------
+
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "mengajukan permintaan restock material " . $nama_material . " dengan kode " . $kode_material;
+        $notifikasi->save();
+
+        // ----------------------------
+
+        return redirect()->route('staff.list-request-restock-material')->with('success', 'Data Request Restock Material berhasil ditambahkan');
+    }
+
+    // ------------------------------------------------
+
+    public function list_request_restock_material_raw()
+    {
+        $request_stock = Request_Stock::all();
+
+        $nama_material = array();
+        $kode_material = array();
+
+        // ----------------------------
+
+        foreach ($request_stock as $key => $value) {
+            $nama_material[] = explode(",", $value->nama_material);
+            $kode_material[] = explode(",", $value->kode_material);
+        }
+
+        // ----------------------------
+
+        $i = 0;
+        foreach ($request_stock as $key => $value) {
+            $value->nama_material = $nama_material[$i];
+            $value->kode_material = $kode_material[$i];
+            $i++;
+        }
+
+        return view('staff.list_request_restock_material', compact('request_stock'));
+    }
+
+    // ------------------------------------------------
+
+    public function acc_request_restock_material(Request $request)
+    {
+        $id = $request->input('id');
+
+        // ----------------------------
+        
+        $request_stock = Request_Stock::find($id);
+        $request_stock->status = 1;
+
+        // ----------------------------
+
+        $request_stock->save();
+        return redirect()->route('staff.list-request-restock-material')->with('success', 'Request Restock Material berhasil disetujui');
+    }
+
+    // ------------------------------------------------
+
+    public function reject_request_restock_material(Request $request)
+    {
+        $id = $request->input('id');
+
+        // ----------------------------
+        
+        $request_stock = Request_Stock::find($id);
+        $request_stock->status = 2;
+
+        // ----------------------------
+
+        $request_stock->save();
+        return redirect()->route('staff.list-request-restock-material')->with('success', 'Request Restock Material berhasil ditolak');
+    }
+
+    // ------------------------------------------------
+
+    public function form_penggunaan_material_gudang_kecil()
+    {
+        $penggunaan_material = Penggunaan_Material::all();
+        $penggunaan_material_buffer = Penggunaan_Material_Buffer::where('status', 1)->get();
+        $len = count($penggunaan_material_buffer);
+
+        return view('staff.form_penggunaan_material_gudang_kecil', compact('penggunaan_material', 'penggunaan_material_buffer', 'len'));
     }
 
     // ------------------------------------------------

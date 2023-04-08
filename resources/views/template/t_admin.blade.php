@@ -69,7 +69,7 @@
                             <hr class="my-2">
                             @endif
 
-                            @if (Auth::user()->role == 4 || Auth::user()->role == 3)
+                            @if (Auth::user()->role != 0 && Auth::user()->role != 3)
                             <li class="nav-item">
                                 <a class="nav-link" href="/list-kedatangan-material"
                                     style="font-size: 18px; text-align: center">
@@ -81,7 +81,7 @@
                             <hr class="my-2">
                             @endif
 
-                            @if (Auth::user()->role == 4 || Auth::user()->role == 3)
+                            @if (Auth::user()->role != 0 && Auth::user()->role != 3)
                             <li class="nav-item">
                                 <a class="nav-link" href="/list-material-sampai"
                                     style="font-size: 18px; text-align: center">
@@ -93,24 +93,55 @@
                             <hr class="my-2">
                             @endif
 
-                            @if (Auth::user()->role == 4 || Auth::user()->role == 3)
-                            <li class="nav-item">
-                                <a class="nav-link" href="/list_material_inventory"
-                                    style="font-size: 18px; text-align: center">
-                                    <i class="fas fa-warehouse" style="font-size: 16px;"></i>
-                                    <span class="nav-link-text ml-2">Inventory</span>
+                            @if (Auth::user()->role != 0)
+                            <li class="nav-item dropdown">
+                                <a style="font-size: 18px; text-align: center" class="nav-link" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-warehouse mr-2" style="font-size: 16px;"></i>
+                                    <span> Inventory</span>
                                 </a>
+
+                                
+                                <div class="dropdown-menu  dropdown-menu-right">    
+                                    <div class="list-group list-group-flush">
+                                        <a href="/list_material_inventory"
+                                            class="list-group-item list-group-item-action">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                </div>
+                                                <div class="col ml--2">
+                                                    <h4 class="mb-0 text-sm">Gudang Besar</h4>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="list-group list-group-flush">
+                                        <a href="/list_penggunaan_material"
+                                            class="list-group-item list-group-item-action">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                </div>
+                                                <div class="col ml--2">
+                                                    <h4 class="mb-0 text-sm">Gudang Kecil</h4>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
                             </li>
 
                             <hr class="my-2">
+
                             @endif
 
-                            @if (Auth::user()->role == 4 || Auth::user()->role == 3)
+                            @if (Auth::user()->role =! 0)
                             <li class="nav-item">
-                                <a class="nav-link" href="/list_penggunaan_material"
+                                <a class="nav-link" href="/list_request_restock_material"
                                     style="font-size: 18px; text-align: center">
-                                    <i class="fas fa-handshake" style="font-size: 16px;"></i>
-                                    <span class="nav-link-text ml-2">Penggunaan</span>
+                                    <i class="fas fa-store" style="font-size: 16px;"></i>
+                                    <span class="nav-link-text ml-2">Restock</span>
                                 </a>
                             </li>
 
