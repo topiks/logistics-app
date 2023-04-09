@@ -491,10 +491,7 @@ class StaffController extends Controller
         $penggunaan_material = Penggunaan_Material::find($id);
         $jumlah_yang_dipinjam = $penggunaan_material->jumlah_yang_dipinjam;
 
-        $penggunaan_material->status = 1;
-        $penggunaan_material->save();
-
-        // ----------------------------
+        // ---------------------------
 
         $nama_material = array();
         $spesifikasi = array();
@@ -511,9 +508,10 @@ class StaffController extends Controller
         // ----------------------------
 
         $material_inventory = Material_Inventory::all();
+        
 
         foreach ($material_inventory as $key => $value) {
-            for ($i=0; $i < count($kode_material); $i++) { 
+            for ($i=0; $i < count($kode_material[0]); $i++) { 
                 if($value->kode_material == $kode_material[0][$i] && $value->nama_material == $nama_material[0][$i]){
                     $value->jumlah = $value->jumlah - $jumlah_yang_dipinjam[0][$i];
                     if ($value->jumlah < 0) {
@@ -526,6 +524,32 @@ class StaffController extends Controller
             }
         }
         
+        // ----------------------------
+
+        $jumlah_data = count($nama_material[0]);
+        for($i=0; $i<$jumlah_data; $i++){
+            $penggunaan_material_satuan = Penggunaan_Material::where('kode_material', $kode_material[0][$i])->where('status', 1)->get();
+            if($penggunaan_material_satuan->count() > 0){
+                $penggunaan_material_satuan = $penggunaan_material_satuan->first();
+                $penggunaan_material_satuan->jumlah_yang_dipinjam = $penggunaan_material_satuan->jumlah_yang_dipinjam + $jumlah_yang_dipinjam[0][$i];
+                $penggunaan_material_satuan->save();
+            }
+            else{
+                $penggunaan_material_satuan = new Penggunaan_Material;
+                $penggunaan_material_satuan->nama_material = $nama_material[0][$i];
+                $penggunaan_material_satuan->status = 1;
+                $penggunaan_material_satuan->spesifikasi = $spesifikasi[0][$i];
+                $penggunaan_material_satuan->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[0][$i];
+                $penggunaan_material_satuan->kode_material = $kode_material[0][$i];
+                $penggunaan_material_satuan->satuan = $satuan[0][$i];
+                $penggunaan_material_satuan->save();
+            }
+        }
+
+        // ----------------------------
+
+        $penggunaan_material->delete();
+
         // ----------------------------
 
         return redirect()->route('staff.list-penggunaan-material')->with('success', 'Penggunaan Material berhasil disetujui');
