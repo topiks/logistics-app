@@ -32,9 +32,16 @@ use App\Exports\DB_Export;
 
 class StaffController extends Controller
 {
-    public function list_kedatangan_material()
-    {
-        $material_datang = Material_Datang::all();
+    public function list_kedatangan_material($kode)
+    {   
+        if($kode == 0)
+            $material_datang = Material_Datang::all();
+        else if($kode == 1)
+            $material_datang = Material_Datang::whereDate('created_at', date('Y-m-d'))->get();
+        else if($kode == 2)
+            $material_datang = Material_Datang::whereBetween('created_at', [date('Y-m-d', strtotime('monday this week')), date('Y-m-d', strtotime('sunday this week'))])->get();
+        else if($kode == 3)
+            $material_datang = Material_Datang::whereMonth('created_at', date('m'))->get();
         
         $nama_material = array();
         $jumlah_material = array();
@@ -60,7 +67,7 @@ class StaffController extends Controller
             $i++;
         }
 
-        return view('staff.list_kedatangan_material', compact('material_datang'));
+        return view('staff.list_kedatangan_material', compact('material_datang', 'kode'));
     }
 
     //------------------------------------------------
@@ -94,17 +101,24 @@ class StaffController extends Controller
             $notifikasi->kegiatan = "menambah data " . $request->input('nama-material') . " pada form kedatangan material";
             $notifikasi->save();
 
-            return redirect()->route('staff.list-kedatangan-material')->with('success', 'Data berhasil ditambahkan');
+            return redirect()->route('staff.list-kedatangan-material', ['kode' => 0])->with('success', 'Data berhasil ditambahkan');
         }
         else
-            return redirect()->route('staff.list-kedatangan-material')->with('error', 'Data gagal ditambahkan');
+            return redirect()->route('staff.list-kedatangan-material', ['kode' => 0])->with('error', 'Data gagal ditambahkan');
     }
 
     //------------------------------------------------
 
-    public function list_material_sampai()
+    public function list_material_sampai($kode)
     {
-        $material_sampai = Material_Sampai::all();
+        if($kode == 0)
+            $material_sampai = Material_Sampai::all();
+        else if($kode == 1)
+            $material_sampai = Material_Sampai::whereDate('created_at', date('Y-m-d'))->get();
+        else if($kode == 2)
+            $material_sampai = Material_Sampai::whereBetween('created_at', [date('Y-m-d', strtotime('monday this week')), date('Y-m-d', strtotime('sunday this week'))])->get();
+        else if($kode == 3)
+            $material_sampai = Material_Sampai::whereMonth('created_at', date('m'))->get();
 
         $nama_material = array();
         $jumlah_material = array();
@@ -130,7 +144,7 @@ class StaffController extends Controller
             $i++;
         }
 
-        return view('staff.list_material_sampai', compact('material_sampai'));
+        return view('staff.list_material_sampai', compact('material_sampai', 'kode'));
     }
 
     //------------------------------------------------
@@ -163,7 +177,7 @@ class StaffController extends Controller
 
         // ----------------------------
 
-        return redirect()->route('staff.list-material-sampai')->with('success', 'Data Material Sampai berhasil ditambahkan');
+        return redirect()->route('staff.list-material-sampai', ['kode' => 0])->with('success', 'Data Material Sampai berhasil ditambahkan');
 
     }
 
@@ -193,7 +207,7 @@ class StaffController extends Controller
         $material_sampai->status = $kode_update;
         $material_sampai->save();
 
-        return redirect()->route('staff.list-material-sampai')->with('success', 'Status Material Sampai berhasil diubah');
+        return redirect()->route('staff.list-material-sampai', ['kode' => 0])->with('success', 'Status Material Sampai berhasil diubah');
     }
 
     //------------------------------------------------
@@ -259,9 +273,9 @@ class StaffController extends Controller
         // ----------------------------
 
         if($request->file('file-an')->storeAs('public/acceptance_notice', $request->file('file-an')->getClientOriginalName()))
-            return redirect()->route('staff.list-material-inventory')->with('success', 'Data Material berhasil diterima');
+            return redirect()->route('staff.list-material-inventory', ['kode' => 0])->with('success', 'Data Material berhasil diterima');
         else
-            return redirect()->route('staff.list-material-inventory')->with('error', 'Data Material gagal diterima');
+            return redirect()->route('staff.list-material-inventory', ['kode' => 0])->with('error', 'Data Material gagal diterima');
 
     }
 
@@ -286,7 +300,7 @@ class StaffController extends Controller
 
         //------------------------
 
-        return redirect()->route('staff.list-material-sampai')->with('success', 'Data Material berhasil ditolak');
+        return redirect()->route('staff.list-material-sampai', ['kode' => 0])->with('success', 'Data Material berhasil ditolak');
     }
 
     //------------------------------------------------
@@ -303,16 +317,23 @@ class StaffController extends Controller
 
         //------------------------
 
-        return redirect()->route('staff.list-material-sampai')->with('success', 'Data Material berhasil dikembalikan');
+        return redirect()->route('staff.list-material-sampai', ['kode' => 0])->with('success', 'Data Material berhasil dikembalikan');
     }
 
     //------------------------------------------------
 
-    public function list_material_inventory()
+    public function list_material_inventory($kode)
     {
-        $material_inventory = Material_Inventory::all();
+        if($kode == 0)
+            $material_inventory = Material_Inventory::all();
+        else if($kode == 1)
+            $material_inventory = Material_Inventory::whereDate('updated_at', date('Y-m-d'))->get();
+        else if($kode == 2)
+            $material_inventory = Material_Inventory::whereBetween('updated_at', [date('Y-m-d', strtotime('monday this week')), date('Y-m-d', strtotime('sunday this week'))])->get();
+        else if($kode == 3)
+            $material_inventory = Material_Inventory::whereMonth('updated_at', date('m'))->get();
 
-        return view('staff.list_material_inventory', compact('material_inventory'));
+        return view('staff.list_material_inventory', compact('material_inventory', 'kode'));
     }
 
     // ------------------------------------------------
@@ -330,7 +351,7 @@ class StaffController extends Controller
 
         // ----------------------------
 
-        return redirect()->route('staff.list-material-inventory')->with('success', 'Data Material berhasil diubah');
+        return redirect()->route('staff.list-material-inventory', ['kode' => 0])->with('success', 'Data Material berhasil diubah');
     }
 
     // ------------------------------------------------
@@ -456,14 +477,21 @@ class StaffController extends Controller
 
         // ----------------------------
 
-        return redirect()->route('staff.list-penggunaan-material')->with('success', 'Data Penggunaan Material berhasil ditambahkan');
+        return redirect()->route('staff.list-penggunaan-material', ['kode' => 0])->with('success', 'Data Penggunaan Material berhasil ditambahkan');
     }
 
     // ------------------------------------------------
 
-    public function list_penggunaan_material()
+    public function list_penggunaan_material($kode)
     {
-        $penggunaan_material = Penggunaan_Material::all();
+        if($kode == 0)
+            $penggunaan_material = Penggunaan_Material::all();
+        else if($kode == 1)
+            $penggunaan_material = Penggunaan_Material::whereDate('updated_at', date('Y-m-d'))->get();
+        else if($kode == 2)
+            $penggunaan_material = Penggunaan_Material::whereBetween('updated_at', [date('Y-m-d', strtotime('monday this week')), date('Y-m-d', strtotime('sunday this week'))])->get();
+        else if($kode == 3)
+            $penggunaan_material = Penggunaan_Material::whereMonth('updated_at', date('m'))->get();
 
         $nama_material = array();
         $spesifikasi = array();
@@ -493,7 +521,7 @@ class StaffController extends Controller
             $i++;
         }
 
-        return view('staff.list_penggunaan_material', compact('penggunaan_material'));
+        return view('staff.list_penggunaan_material', compact('penggunaan_material', 'kode'));
     }
 
     // ------------------------------------------------
@@ -527,7 +555,7 @@ class StaffController extends Controller
                 if($value->kode_material == $kode_material[0][$i] && $value->nama_material == $nama_material[0][$i]){
                     $value->jumlah = $value->jumlah - $jumlah_yang_dipinjam[0][$i];
                     if ($value->jumlah < 0) {
-                        return redirect()->route('staff.list-penggunaan-material')->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
+                        return redirect()->route('staff.list-penggunaan-material', ['kode' => 0])->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
                     }
                     else{
                         $value->save();
@@ -571,7 +599,7 @@ class StaffController extends Controller
 
         // ----------------------------
 
-        return redirect()->route('staff.list-penggunaan-material')->with('success', 'Penggunaan Material berhasil disetujui');
+        return redirect()->route('staff.list-penggunaan-material', ['kode' => 0])->with('success', 'Penggunaan Material berhasil disetujui');
     }
 
     // ------------------------------------------------
@@ -874,15 +902,22 @@ class StaffController extends Controller
 
         // ----------------------------
 
-        return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Data Penggunaan Material berhasil ditambahkan');
+        return redirect()->route('staff.list-penggunaan-material-gudang-kecil', ['kode' => 0])->with('success', 'Data Penggunaan Material berhasil ditambahkan');
 
     }
 
     // ------------------------------------------------
 
-    public function list_penggunaan_material_gudang_kecil()
+    public function list_penggunaan_material_gudang_kecil($kode)
     {
-        $penggunaan_gudang_kecil = Penggunaan_Gudang_Kecil::all();
+        if($kode == 0)
+            $penggunaan_gudang_kecil = Penggunaan_Gudang_Kecil::all();
+        else if($kode == 1)
+            $penggunaan_gudang_kecil = Penggunaan_Gudang_Kecil::whereDate('updated_at', date('Y-m-d'))->get();
+        else if($kode == 2)
+            $penggunaan_gudang_kecil = Penggunaan_Gudang_Kecil::whereBetween('updated_at', [date('Y-m-d', strtotime('monday this week')), date('Y-m-d', strtotime('sunday this week'))])->get();
+        else if($kode == 3)
+            $penggunaan_gudang_kecil = Penggunaan_Gudang_Kecil::whereMonth('updated_at', date('m'))->get();
 
         $nama_material = array();
         $spesifikasi = array();
@@ -915,7 +950,7 @@ class StaffController extends Controller
             $i++;
         }
 
-        return view('staff.list_penggunaan_gudang_kecil', compact('penggunaan_gudang_kecil'));
+        return view('staff.list_penggunaan_gudang_kecil', compact('penggunaan_gudang_kecil', 'kode'));
     }
 
     // ------------------------------------------------
@@ -951,7 +986,7 @@ class StaffController extends Controller
                 if($value->kode_material == $kode_material[0][$i] && $value->nama_material == $nama_material[0][$i]){
                     $value->jumlah_yang_dipinjam = $value->jumlah_yang_dipinjam - $jumlah_yang_dipinjam[0][$i];
                     if ($value->jumlah_yang_dipinjam < 0) {
-                        return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
+                        return redirect()->route('staff.list-penggunaan-material-gudang-kecil', ['kode' => 0])->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
                     }
                     else{
                         $value->save();
@@ -996,7 +1031,7 @@ class StaffController extends Controller
 
         // ----------------------------
  
-        return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Penggunaan Material berhasil disetujui');
+        return redirect()->route('staff.list-penggunaan-material-gudang-kecil', ['kode' => 0])->with('success', 'Penggunaan Material berhasil disetujui');
 
     }
 
@@ -1019,7 +1054,7 @@ class StaffController extends Controller
         $notifikasi->kegiatan = "menolak penggunaan  material " . $penggunaan_material->nama_material . " dari gudang kecil ke staff pekerja";
         $notifikasi->save();
 
-        return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Penggunaan Material berhasil ditolak');
+        return redirect()->route('staff.list-penggunaan-material-gudang-kecil', ['kode' => 0])->with('success', 'Penggunaan Material berhasil ditolak');
     }
 
     // ------------------------------------------------

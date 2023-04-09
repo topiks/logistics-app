@@ -39,11 +39,42 @@
                             <i class="fas fa-file-excel" style="font-size: 16px;"></i> Export Excel</button>
                         </a>
 
-                        <a href="/list_penggunaan_material_gudang_kecil" class="">
+                        <a href="/list_penggunaan_material_gudang_kecil/0" class="">
                             <button class="btn btn-md bg-warning" style="color: white;">
                             <i class="fas fa-list" style="font-size: 16px;"></i> List Penggunaan Material</button>
                         </a>
                     </h5>
+
+                    <div class="sort-by-time mb-3">
+                        <a href="/list_penggunaan_material/0">
+                            @if($kode == 0)
+                                <span class="badge badge-pill badge-lg badge-info">Semua</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Semua</span>
+                            @endif
+                        </a>
+                        <a href="/list_penggunaan_material/1">
+                            @if($kode == 1)
+                                <span class="badge badge-pill badge-lg badge-info">Hari Ini</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Hari Ini</span>
+                            @endif
+                        </a>
+                        <a href="/list_penggunaan_material/2">
+                            @if($kode == 2)
+                                <span class="badge badge-pill badge-lg badge-info">Minggu Ini</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Minggu Ini</span>
+                            @endif
+                        </a>
+                        <a href="/list_penggunaan_material/3">
+                            @if($kode == 3)
+                                <span class="badge badge-pill badge-lg badge-info">Bulan Ini</span>
+                            @else
+                            <span class="badge badge-pill badge-lg badge-primary">Bulan Ini</span>
+                            @endif
+                        </a>
+                    </div>
 
                     <div class="row">
                         <div class="col">
@@ -73,6 +104,7 @@
                                                     <th>Jumlah</th>
                                                     <th>Satuan</th>
                                                     <th>Kode Material</th>
+                                                    <th>Diupdate Tanggal</th>
                                                     <th>Waktu Pengambilan</th>
                                                     <th>Aksi</th>
                                                 </tr>
@@ -115,6 +147,9 @@
                                                         @foreach($m->kode_material as $k)
                                                             <li>{{$k}}</li>
                                                         @endforeach
+                                                    </td>
+                                                    <td>
+                                                        <li>{{$m->updated_at}}</li>
                                                     </td>
                                                     <td>{{ $m->created_at }}</td>
                                                     <td>

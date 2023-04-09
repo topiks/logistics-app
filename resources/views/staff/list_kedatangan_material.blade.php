@@ -39,6 +39,37 @@
                         </a>
                     </h5>
 
+                    <div class="sort-by-time mb-3">
+                        <a href="/list-kedatangan-material/0">
+                            @if($kode == 0)
+                                <span class="badge badge-pill badge-lg badge-info">Semua</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Semua</span>
+                            @endif
+                        </a>
+                        <a href="/list-kedatangan-material/1">
+                            @if($kode == 1)
+                                <span class="badge badge-pill badge-lg badge-info">Hari Ini</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Hari Ini</span>
+                            @endif
+                        </a>
+                        <a href="/list-kedatangan-material/2">
+                            @if($kode == 2)
+                                <span class="badge badge-pill badge-lg badge-info">Minggu Ini</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Minggu Ini</span>
+                            @endif
+                        </a>
+                        <a href="/list-kedatangan-material/3">
+                            @if($kode == 3)
+                                <span class="badge badge-pill badge-lg badge-info">Bulan Ini</span>
+                            @else
+                            <span class="badge badge-pill badge-lg badge-primary">Bulan Ini</span>
+                            @endif
+                        </a>
+                    </div>
+
                     <div class="row">
                         <div class="col">
                             <div class="card shadow mb-4">
@@ -66,12 +97,13 @@
                                                     <th>Nomor SPBB/Nota</th>
                                                     <th>Pemasok</th>
                                                     <th>EDA</th>
+                                                    <th>Dibuat Tanggal</th>
                                                     <th>Dokumen Material</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php $no = 0; ?>
+                                                <?php $no = 0 ?>
                                                 @foreach ($material_datang as $m)
                                                 <tr>
                                                     <?php $no++; ?>
@@ -103,6 +135,7 @@
                                                     <td>{{$m->nomor_spbb_nota}}</td>
                                                     <td>{{$m->pemasok}}</td>
                                                     <td>{{$m->eda}}</td>
+                                                    <td>{{$m->created_at}}</td>
                                                     <td>
                                                         <a href="/storage/material_datang/{{$m->dokumen_material}}" target="_blank">
                                                             <button class="btn btn-md bg-warning mr-3" style="color: white;"  data-toggle="modal" data-target="#ganti-password">
@@ -110,14 +143,14 @@
                                                             </button>
                                                         </a>
                                                     </td>
-
-                                                    @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                                                     <td>
+                                                        @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                                                         <button class="btn btn-md bg-success mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
                                                             Sampai
                                                         </button>
+                                                        @endif
                                                     </td>
-                                                    @endif
+                                                    
                                                 </tr>
                                                 @endforeach
                                             </tbody>

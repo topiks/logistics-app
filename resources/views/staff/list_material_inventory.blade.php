@@ -44,6 +44,37 @@
                         </a>
                     </h5>
 
+                    <div class="sort-by-time mb-3">
+                        <a href="/list_material_inventory/0">
+                            @if($kode == 0)
+                                <span class="badge badge-pill badge-lg badge-info">Semua</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Semua</span>
+                            @endif
+                        </a>
+                        <a href="/list_material_inventory/1">
+                            @if($kode == 1)
+                                <span class="badge badge-pill badge-lg badge-info">Hari Ini</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Hari Ini</span>
+                            @endif
+                        </a>
+                        <a href="/list_material_inventory/2">
+                            @if($kode == 2)
+                                <span class="badge badge-pill badge-lg badge-info">Minggu Ini</span>
+                            @else
+                                <span class="badge badge-pill badge-lg badge-primary">Minggu Ini</span>
+                            @endif
+                        </a>
+                        <a href="/list_material_inventory/3">
+                            @if($kode == 3)
+                                <span class="badge badge-pill badge-lg badge-info">Bulan Ini</span>
+                            @else
+                            <span class="badge badge-pill badge-lg badge-primary">Bulan Ini</span>
+                            @endif
+                        </a>
+                    </div>
+
                     <div class="row">
                         <div class="col">
                             <div class="card shadow mb-4">
@@ -65,6 +96,7 @@
                                                     <th>Satuan</th>
                                                     <th>Kode Material</th>
                                                     <th>Lokasi Penyimpanan</th>
+                                                    <th>Diupdate Tanggal</th>
                                                     <th>Aksi</th>
                                                     <th>Dokumen Acceptance Notice</th>
                                                 </tr>
@@ -88,6 +120,7 @@
                                                         {{$m->kode_material}}
                                                     </td>
                                                     <td>{{$m->lokasi}}</td>
+                                                    <td>{{$m->updated_at}}</td>
                                                     <td>
                                                         @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                                                         <button class="btn btn-md bg-warning mr-3" style="color: white;"  data-toggle="modal" data-target="#update-stock" onclick="update_stock({{ $m->id }}, {{ $m->jumlah }});">
@@ -150,7 +183,6 @@
             document.getElementById('id_material').value = id;
             document.getElementById('stock').value = jumlah;
         }
-
     </script>
 
 

@@ -88,6 +88,14 @@ Route::get('/exp_db/{kode}', [StaffController::class, 'export_db'])->name('expor
 |---- 2 = Reject
 */
 
+/*
+|---- STATUS LIST ITEM
+|---- 0 = Semua
+|---- 1 = Hari ini
+|---- 2 = Minggu ini
+|---- 3 = Bulan ini
+*/
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');    
 
@@ -100,11 +108,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     // ----------------------
 
-    Route::get('/list-kedatangan-material', [StaffController::class, 'list_kedatangan_material'])->name('staff.list-kedatangan-material');
+    Route::get('/list-kedatangan-material/{kode}', [StaffController::class, 'list_kedatangan_material'])->name('staff.list-kedatangan-material');
     Route::get('/kedatangan-material', [StaffController::class, 'form_kedatangan_material'])->name('staff.form-kedatangan-material');
     Route::post('/kedatangan-material', [StaffController::class, 'form_kedatangan_material_process'])->name('staff.form-kedatangan-material-process');
 
-    Route::get('/list-material-sampai', [StaffController::class, 'list_material_sampai'])->name('staff.list-material-sampai');
+    Route::get('/list-material-sampai/{kode}', [StaffController::class, 'list_material_sampai'])->name('staff.list-material-sampai');
     Route::post('/material-sampai', [StaffController::class, 'material_sampai'])->name('staff.material-sampai');
 
     // ----------------------
@@ -121,7 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // ----------------------
 
-    Route::get('/list_material_inventory', [StaffController::class, 'list_material_inventory'])->name('staff.list-material-inventory');
+    Route::get('/list_material_inventory/{kode}', [StaffController::class, 'list_material_inventory'])->name('staff.list-material-inventory');
     Route::post('update_stock_material_inventory', [StaffController::class, 'update_stock_material_inventory'])->name('staff.update-stock-material_inventory');
     Route::get('/form_penggunaan_material', [StaffController::class, 'form_penggunaan_material'])->name('staff.form-penggunaan-material');
     Route::post('/form_penggunaan_material', [StaffController::class, 'form_penggunaan_material_buffer_process'])->name('staff.form-penggunaan-material-buffer-process');
@@ -141,7 +149,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ----------------------
 
     Route::get('/form_penggunaan_material_process', [StaffController::class, 'form_penggunaan_material_process'])->name('staff.form-penggunaan-material-process');
-    Route::get('/list_penggunaan_material', [StaffController::class, 'list_penggunaan_material'])->name('staff.list-penggunaan-material');
+    Route::get('/list_penggunaan_material/{kode}', [StaffController::class, 'list_penggunaan_material'])->name('staff.list-penggunaan-material');
 
     Route::get('/form_request_restock_material', [StaffController::class, 'form_request_restock_material'])->name('staff.form-request-restock-material');
     Route::get('/list_request_restock_material', [StaffController::class, 'list_request_restock_material_raw'])->name('staff.list-request-restock-material');
@@ -156,7 +164,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // ----------------------
 
-    Route::get('/list_penggunaan_material_gudang_kecil', [StaffController::class, 'list_penggunaan_material_gudang_kecil'])->name('staff.list-penggunaan-material-gudang-kecil');
+    Route::get('/list_penggunaan_material_gudang_kecil/{kode}', [StaffController::class, 'list_penggunaan_material_gudang_kecil'])->name('staff.list-penggunaan-material-gudang-kecil');
     Route::post('/acc_penggunaan_material_gudang_kecil', [StaffController::class, 'acc_penggunaan_material_gudang_kecil'])->name('staff.acc-penggunaan-material-gudang-kecil');
     Route::post('/reject_penggunaan_material_gudang_kecil', [StaffController::class, 'reject_penggunaan_material_gudang_kecil'])->name('staff.reject-penggunaan-material-gudang-kecil');
 });

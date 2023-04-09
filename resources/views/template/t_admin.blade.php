@@ -71,7 +71,7 @@
 
                             @if (Auth::user()->role != 0 && Auth::user()->role != 3)
                             <li class="nav-item">
-                                <a class="nav-link" href="/list-kedatangan-material"
+                                <a class="nav-link" href="/list-kedatangan-material/0"
                                     style="font-size: 18px; text-align: center">
                                     <i class="fas fa-truck" style="font-size: 16px;"></i>
                                     <span class="nav-link-text ml-2">Kedatangan</span>
@@ -83,7 +83,7 @@
 
                             @if (Auth::user()->role != 0 && Auth::user()->role != 3)
                             <li class="nav-item">
-                                <a class="nav-link" href="/list-material-sampai"
+                                <a class="nav-link" href="/list-material-sampai/0"
                                     style="font-size: 18px; text-align: center">
                                     <i class="fas fa-box-open" style="font-size: 16px;"></i>
                                     <span class="nav-link-text ml-2">Pengecekan</span>
@@ -104,7 +104,7 @@
                                 
                                 <div class="dropdown-menu  dropdown-menu-right">    
                                     <div class="list-group list-group-flush">
-                                        <a href="/list_material_inventory"
+                                        <a href="/list_material_inventory/0"
                                             class="list-group-item list-group-item-action">
                                             <div class="row align-items-center">
                                                 <div class="col-auto">
@@ -117,7 +117,7 @@
                                     </div>
 
                                     <div class="list-group list-group-flush">
-                                        <a href="/list_penggunaan_material"
+                                        <a href="/list_penggunaan_material/0"
                                             class="list-group-item list-group-item-action">
                                             <div class="row align-items-center">
                                                 <div class="col-auto">
