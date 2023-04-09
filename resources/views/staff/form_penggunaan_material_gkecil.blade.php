@@ -90,6 +90,11 @@
                                                 <input name="jumlah_material" type="text" class="form-control"  required>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-school">Project</label>
+                                                <input name="project" type="text" class="form-control"  required>
+                                            </div>
+
                                             <button type="submit" value="" class="btn text-lighter" style="width: 100%; background-color: #264579;">Tambah</button>
                                             <hr class="my-4" />
                                         </form>

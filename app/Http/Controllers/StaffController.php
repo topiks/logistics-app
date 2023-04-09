@@ -741,6 +741,7 @@ class StaffController extends Controller
         $id = $request->input('id_material_terpilih');
         $spesifikasi = $request->input('spesifikasi');
         $jumlah = $request->input('jumlah_material');
+        $project = $request->input('project');
 
         // ----------------------------
 
@@ -755,6 +756,7 @@ class StaffController extends Controller
         $penggunaan_material_buffer->jumlah_akan_digunakan = $jumlah;
         $penggunaan_material_buffer->status = 1;
         $penggunaan_material_buffer->satuan = $penggunaan_material->satuan;
+        $penggunaan_material_buffer->project = $project;
         $penggunaan_material_buffer->save();
 
         // ----------------------------
@@ -773,6 +775,7 @@ class StaffController extends Controller
         $jumlah_akan_digunakan = array();
         $kode_material = array();
         $satuan = array();
+        $project = array();
 
         // ----------------------------
 
@@ -782,6 +785,7 @@ class StaffController extends Controller
             $jumlah_akan_digunakan[] = $value->jumlah_akan_digunakan;
             $kode_material[] = $value->kode_material;
             $satuan[] = $value->satuan;
+            $project[] = $value->project;
         }
 
         // ----------------------------
@@ -807,6 +811,7 @@ class StaffController extends Controller
         $jumlah_akan_digunakan = implode(",", $jumlah_akan_digunakan);
         $kode_material = implode(",", $kode_material);
         $satuan = implode(",", $satuan);
+        $project = implode(",", $project);
 
         // ----------------------------
 
@@ -817,6 +822,7 @@ class StaffController extends Controller
         $penggunaan_gudang_kecil->kode_material = $kode_material;
         $penggunaan_gudang_kecil->satuan = $satuan;
         $penggunaan_gudang_kecil->status = 0;
+        $penggunaan_gudang_kecil->project = $project;
         $penggunaan_gudang_kecil->save();
 
         // ----------------------------
@@ -847,6 +853,7 @@ class StaffController extends Controller
         $jumlah_yang_dipinjam = array();
         $kode_material = array();
         $satuan = array();
+        $project = array();
 
         // ----------------------------
 
@@ -856,6 +863,7 @@ class StaffController extends Controller
             $jumlah_yang_dipinjam[] = explode(",", $value->jumlah_yang_dipinjam);
             $kode_material[] = explode(",", $value->kode_material);
             $satuan[] = explode(",", $value->satuan);
+            $project[] = explode(",", $value->project);
         }
 
         // ----------------------------
@@ -867,6 +875,7 @@ class StaffController extends Controller
             $value->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[$i];
             $value->kode_material = $kode_material[$i];
             $value->satuan = $satuan[$i];
+            $value->project = $project[$i];
             $i++;
         }
 
@@ -888,12 +897,14 @@ class StaffController extends Controller
         $jumlah_yang_dipinjam = array();
         $kode_material = array();
         $satuan = array();
+        $project = array();
 
         $nama_material[] = explode(",", $penggunaan_gudang_kecil->nama_material);
         $spesifikasi[] = explode(",", $penggunaan_gudang_kecil->spesifikasi);
         $jumlah_yang_dipinjam[] = explode(",", $penggunaan_gudang_kecil->jumlah_yang_dipinjam);
         $kode_material[] = explode(",", $penggunaan_gudang_kecil->kode_material);
         $satuan[] = explode(",", $penggunaan_gudang_kecil->satuan);
+        $project[] = explode(",", $penggunaan_gudang_kecil->project);
 
         // ----------------------------
 
@@ -917,7 +928,7 @@ class StaffController extends Controller
 
         $jumlah_data = count($nama_material[0]);
         for($i=0; $i<$jumlah_data; $i++){
-            $penggunaan_gudang_kecil_satuan = Penggunaan_Gudang_Kecil::where('kode_material', $kode_material[0][$i])->where('status', 1)->get();
+            $penggunaan_gudang_kecil_satuan = Penggunaan_Gudang_Kecil::where('kode_material', $kode_material[0][$i])->where('status', 1)->where('project', $project[0][$i])->get();
             if($penggunaan_gudang_kecil_satuan->count() > 0){
                 $penggunaan_gudang_kecil_satuan = $penggunaan_gudang_kecil_satuan->first();
                 $penggunaan_gudang_kecil_satuan->jumlah_yang_dipinjam = $penggunaan_gudang_kecil_satuan->jumlah_yang_dipinjam + $jumlah_yang_dipinjam[0][$i];
@@ -931,6 +942,7 @@ class StaffController extends Controller
                 $penggunaan_gudang_kecil_satuan->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[0][$i];
                 $penggunaan_gudang_kecil_satuan->kode_material = $kode_material[0][$i];
                 $penggunaan_gudang_kecil_satuan->satuan = $satuan[0][$i];
+                $penggunaan_gudang_kecil_satuan->project = $project[0][$i];
                 $penggunaan_gudang_kecil_satuan->save();
             }
         }

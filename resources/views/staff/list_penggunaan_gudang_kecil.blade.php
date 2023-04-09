@@ -54,6 +54,7 @@
                                                     <th>Jumlah</th>
                                                     <th>Satuan</th>
                                                     <th>Kode Material</th>
+                                                    <th>Project</th>
                                                     <th>Waktu Pengambilan</th>
                                                     <th>Aksi</th>
                                                 </tr>
@@ -95,6 +96,11 @@
                                                     <td>
                                                         @foreach($m->kode_material as $k)
                                                             <li>{{$k}}</li>
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+                                                        @foreach($m->project as $p)
+                                                            <li>{{$p}}</li>
                                                         @endforeach
                                                     </td>
                                                     <td>{{ $m->created_at }}</td>

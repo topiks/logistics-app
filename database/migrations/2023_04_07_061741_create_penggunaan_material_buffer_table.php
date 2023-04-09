@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('kode_material');
             $table->string('satuan');
             $table->string('jumlah_akan_digunakan');
+            $table->string('project')->nullable();
             $table->timestamps();
         });
     }

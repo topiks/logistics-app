@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('kode_material');
             $table->string('satuan');
             $table->string('jumlah_yang_dipinjam');
+            $table->string('project');
             $table->timestamps();
         });
     }

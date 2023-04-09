@@ -17,5 +17,6 @@ class Penggunaan_Gudang_Kecil extends Model
         'kode_material',
         'satuan',
         'jumlah_yang_dipinjam',
+        'project',
     ];
 }

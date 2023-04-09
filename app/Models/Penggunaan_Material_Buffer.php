@@ -17,5 +17,6 @@ class Penggunaan_Material_Buffer extends Model
         'kode_material',
         'satuan',
         'jumlah_akan_digunakan',
+        'project',
     ];
 }
