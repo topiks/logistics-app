@@ -46,6 +46,8 @@ Route::post('/reset_pass', [UserController::class, 'set_new_pass'])->name('admin
 Route::get('/e', [StaffController::class, 'export'])->name('export');
 Route::get('/te', [StaffController::class, 'display_export'])->name('display_export');
 
+Route::get('/exp_db/{kode}', [StaffController::class, 'export_db'])->name('export_db');
+
 // ========================================================================
 
 /*

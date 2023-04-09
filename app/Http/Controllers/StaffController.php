@@ -27,6 +27,7 @@ use App\Mail\MyMail;
 
 use App\Imports\LPBImport;
 use App\Exports\LPBexport;
+use App\Exports\DB_Export;
 
 
 class StaffController extends Controller
@@ -1021,6 +1022,28 @@ class StaffController extends Controller
         return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Penggunaan Material berhasil ditolak');
     }
 
+    // ------------------------------------------------
+
+    public function export_db($_kode)
+    {
+        $nama_tabel = null;
+        if($_kode == 0)
+            $nama_tabel = 'Material Datang';
+        else if($_kode == 1)
+            $nama_tabel = 'Material Sampai';
+        else if($_kode == 2)
+            $nama_tabel = 'Material Inventory Gudang Besar';
+        else if($_kode == 3)
+            $nama_tabel = 'Material Gudang Kecil';
+        else if($_kode == 4)
+        $nama_tabel = 'Material Penggunaan oleh Pekerja';
+        
+
+        return Excel::download(new DB_Export($_kode), 'Tabel '.$nama_tabel.'.xlsx');
+    }
+
+    // ------------------------------------------------
+
     public function export()
     {
         // download with styles
@@ -1031,5 +1054,7 @@ class StaffController extends Controller
     {
         return view('excel.t_LPB');
     }
+
+
 
 }

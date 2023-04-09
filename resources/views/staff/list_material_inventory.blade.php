@@ -26,8 +26,8 @@
             <div class="card" style="width: 100%;">
                 <div class="card-body">
 
-                    @if (Auth::user()->role == 3)
                     <h5 class="card-title" style="font-size: xx-large; text-align: left;">
+                        @if (Auth::user()->role == 3)
                         <a href="/form_penggunaan_material" class="">
                             <button class="btn btn-md bg-primary" style="color: white;">
                             <i class="fas fa-plus" style="font-size: 16px;"></i> Form Penggunaan Material ke Gudang Kecil</button>
@@ -37,8 +37,12 @@
                             <button class="btn btn-md bg-warning" style="color: white;">
                             <i class="fas fa-exclamation" style="font-size: 16px;"></i> Request Pengambilan Stock Material</button>
                         </a>
+                        @endif
+                        <a href="/exp_db/2" class="">
+                            <button class="btn btn-md bg-success" style="color: white;">
+                            <i class="fas fa-file-excel" style="font-size: 16px;"></i> Export Excel</button>
+                        </a>
                     </h5>
-                    @endif
 
                     <div class="row">
                         <div class="col">

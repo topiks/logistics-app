@@ -26,6 +26,13 @@
             <div class="card" style="width: 100%;">
                 <div class="card-body">
 
+                    <h5 class="card-title" style="font-size: xx-large; text-align: left;">
+                        <a href="/exp_db/1" class="">
+                            <button class="btn btn-md bg-success" style="color: white;">
+                            <i class="fas fa-file-excel" style="font-size: 16px;"></i> Export Excel</button>
+                        </a>
+                    </h5>
+
                     <div class="row">
                         <div class="col">
                             <div class="card shadow mb-4">

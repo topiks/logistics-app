@@ -34,6 +34,11 @@
                         </a>
                         @endif
 
+                        <a href="/exp_db/3" class="">
+                            <button class="btn btn-md bg-success" style="color: white;">
+                            <i class="fas fa-file-excel" style="font-size: 16px;"></i> Export Excel</button>
+                        </a>
+
                         <a href="/list_penggunaan_material_gudang_kecil" class="">
                             <button class="btn btn-md bg-warning" style="color: white;">
                             <i class="fas fa-list" style="font-size: 16px;"></i> List Penggunaan Material</button>
