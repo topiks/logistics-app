@@ -246,6 +246,13 @@ class StaffController extends Controller
 
         // ----------------------------
 
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "menyetujui penerimaan menerima material " . $material_sampai->nama_material . " dengan nomor PO " . $material_sampai->nomor_po;
+        $notifikasi->save();
+
+        // ----------------------------
+
         $material_sampai->delete();
 
         // ----------------------------
@@ -552,6 +559,13 @@ class StaffController extends Controller
 
         // ----------------------------
 
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "menyetujui penerimaan pengambilan material " . $penggunaan_material->penggunaan_material . " dengan kode material " . $penggunaan_material->kode_material . " dari gudang besar ke gudang kecil";
+        $notifikasi->save();
+
+        // ----------------------------
+
         $penggunaan_material->delete();
 
         // ----------------------------
@@ -568,6 +582,11 @@ class StaffController extends Controller
 
         $penggunaan_material->status = 2;
         $penggunaan_material->save();
+
+        $notifikasi  = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "menolak penggunaan material " . $penggunaan_material->nama_material . " dengan kode material " . $penggunaan_material->kode_material . " dari gudang besar ke gudang kecil";
+        $notifikasi->save();
 
         return redirect()->route('staff.list-penggunaan-material')->with('success', 'Penggunaan Material berhasil ditolak');
 
@@ -703,6 +722,14 @@ class StaffController extends Controller
         // ----------------------------
 
         $request_stock->save();
+
+        // ----------------------------
+
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "menyetujui permintaan restock material " . $request_stock->nama_material . " dengan kode " . $request_stock->kode_material;
+        $notifikasi->save();
+
         return redirect()->route('staff.list-request-restock-material')->with('success', 'Request Restock Material berhasil disetujui');
     }
 
@@ -720,6 +747,14 @@ class StaffController extends Controller
         // ----------------------------
 
         $request_stock->save();
+
+        // ----------------------------
+
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "menolak permintaan restock material " . $request_stock->nama_material . " dengan kode " . $request_stock->kode_material;
+        $notifikasi->save();
+
         return redirect()->route('staff.list-request-restock-material')->with('success', 'Request Restock Material berhasil ditolak');
     }
 
@@ -947,13 +982,20 @@ class StaffController extends Controller
             }
         }
 
-         // ----------------------------
+        // ----------------------------
 
-         $penggunaan_gudang_kecil->delete();
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan =  "menyetujui penggunaan  material " . $penggunaan_gudang_kecil->nama_material . " dari gudang kecil ke staff pekerja";
+        $notifikasi->save();
 
-         // ----------------------------
+        // ----------------------------
+
+        $penggunaan_gudang_kecil->delete();
+
+        // ----------------------------
  
-         return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Penggunaan Material berhasil disetujui');
+        return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Penggunaan Material berhasil disetujui');
 
     }
 
@@ -964,8 +1006,17 @@ class StaffController extends Controller
         $id = $request->input('id');
         $penggunaan_material = Penggunaan_Gudang_Kecil::find($id);
 
+        // ----------------------------
+
         $penggunaan_material->status = 2;
         $penggunaan_material->save();
+
+        // ----------------------------
+
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "menolak penggunaan  material " . $penggunaan_material->nama_material . " dari gudang kecil ke staff pekerja";
+        $notifikasi->save();
 
         return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Penggunaan Material berhasil ditolak');
     }
