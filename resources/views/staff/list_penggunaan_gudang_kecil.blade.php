@@ -1,5 +1,5 @@
 @extends('template/t_admin')
-@section('title', 'List Gudang Kecil | BBI Warehouse Materal System')
+@section('title', 'List Penggunaan Staff Pekerja | BBI Warehouse Materal System')
 
 @section('container')
 
@@ -10,7 +10,7 @@
                 <div class="col-lg-6 col-7">
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block ">
                         <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                            <li class="breadcrumb-item"><a href="#" style="color: #172B4D">List Inventory Gudang Kecil</a></li>
+                            <li class="breadcrumb-item"><a href="#" style="color: #172B4D">List Penggunaan Material oleh Staff Pekerja</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -25,20 +25,6 @@
         <div class="col-12" style="width: 100%;">
             <div class="card" style="width: 100%;">
                 <div class="card-body">
-
-                    <h5 class="card-title" style="font-size: xx-large; text-align: left;">
-                        @if (Auth::user()->role == 3)
-                        <a href="/form_penggunaan_material_gudang_kecil" class="">
-                            <button class="btn btn-md bg-primary" style="color: white;">
-                            <i class="fas fa-plus" style="font-size: 16px;"></i> Form Penggunaan Material oleh Staff Pekerja</button>
-                        </a>
-                        @endif
-
-                        <a href="/list_penggunaan_material_gudang_kecil" class="">
-                            <button class="btn btn-md bg-warning" style="color: white;">
-                            <i class="fas fa-list" style="font-size: 16px;"></i> List Penggunaan Material</button>
-                        </a>
-                    </h5>
 
                     <div class="row">
                         <div class="col">
@@ -74,7 +60,7 @@
                                             </thead>
                                             <tbody>
                                                 <?php $no = 0; ?>
-                                                @foreach ($penggunaan_material as $m)
+                                                @foreach ($penggunaan_gudang_kecil as $m)
                                                 <tr>
                                                     <?php $no++; ?>
                                                     <td><?= $no; ?></td>
@@ -82,7 +68,7 @@
                                                         @if($m->status == 0)
                                                             <span class="badge badge-warning">Menunggu Persetujuan</span>
                                                         @elseif($m->status == 1)
-                                                            <span class="badge badge-success">Disetujui</span>
+                                                            <span class="badge badge-success">Already Used</span>
                                                         @elseif($m->status == 2)
                                                             <span class="badge badge-danger">Ditolak</span>
                                                         @endif
@@ -151,13 +137,14 @@
         </div>
     </div>
 
+    
 <!-- Accepted -->
 <div class="modal fade" id="acc-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h3 class="mt-3">Setujui Penggunaan Material ke Gudang Kecil ?</h3>
-                    <form action="{{ route('staff.acc-penggunaan-gudang-kecil') }}" enctype="multipart/form-data" method="post">
+                    <h3 class="mt-3">Setujui Penggunaan Material Gudang Kecil oleh Staff Pekerja ?</h3>
+                    <form action="{{ route('staff.acc-penggunaan-material-gudang-kecil') }}" enctype="multipart/form-data" method="post">
                         @csrf
                         <div class="form-group" hidden>
                             <label class="form-control-label" for="input-school">id</label>
@@ -178,8 +165,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h3 class="mt-3">Tolak Penggunaan Material ke Gudang Kecil ?</h3>
-                    <form action="{{ route('staff.reject-penggunaan-gudang-kecil') }}" enctype="multipart/form-data" method="post">
+                    <h3 class="mt-3">Tolak Penggunaan Material Gudang Kecil oleh Staff Pekerja ?</h3>
+                    <form action="{{ route('staff.reject-penggunaan-material-gudang-kecil') }}" enctype="multipart/form-data" method="post">
                         @csrf
                         <div class="form-group" hidden>
                             <label class="form-control-label" for="input-school">id</label>

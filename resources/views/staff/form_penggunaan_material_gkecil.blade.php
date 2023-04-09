@@ -10,7 +10,7 @@
                     <div class="col-lg-6 col-7">
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                                <li class="breadcrumb-item"><a style="color: #172B4D">Form Penggunaan Material Gudang Kecil</a></li>
+                                <li class="breadcrumb-item"><a style="color: #172B4D">Form Penggunaan Material Gudang Kecil oleh Staff Pekerja</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -55,7 +55,7 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form action="{{ route('staff.form-penggunaan-material-buffer-process') }}" enctype="multipart/form-data" method="post">
+                                        <form action="{{ route('staff.form-penggunaan-material-gudang-kecil-process') }}" enctype="multipart/form-data" method="post">
                                             @csrf
 
                                             @if ($notification = Session::get('failed'))
@@ -73,9 +73,9 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-nama-material">Nama Material</label>
                                                 <select name="id_material_terpilih" class="custom-select custom-select-lg mb-3" required>
-                                                    <option hidden disabled selected>-- Pilih Material --</option>
+                                                    <option hidden disabled selected>-- Pilih Material di Gudang Kecil --</option>
                                                     @foreach($penggunaan_material as $m)
-                                                        <option value="{{$m->id}}">Nama : {{$m->nama_material}} | Kode : {{$m->kode_material}} | Stock : {{$m->jumlah}} {{$m->satuan}}</option>
+                                                        <option value="{{$m->id}}">Nama : {{$m->nama_material}} | Kode : {{$m->kode_material}} | Stock : {{$m->jumlah_yang_dipinjam}} {{$m->satuan}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -102,5 +102,21 @@
                 </div>
             </div>
         </div>
+
+    <div class="modal fade" id="gunakan-material-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Gunakan Material ?</h3>
+                </div>
+                <div class="modal-footer">
+                    <a href="/form_penggunaan_material_gudang_kecil_process_final">
+                        <button id="loloskan" href="" type="submit" class="btn btn-primary">Gunakan</button>
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection

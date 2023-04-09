@@ -18,6 +18,7 @@ use App\Models\Material_Sampai;
 use App\Models\Material_Inventory;
 use App\Models\Penggunaan_Material_Buffer;
 use App\Models\Penggunaan_Material;
+use App\Models\Penggunaan_Gudang_Kecil;
 use App\Models\Request_Stock_Buffer;
 use App\Models\Request_Stock;
 use App\Models\Notifikasi;
@@ -369,9 +370,13 @@ class StaffController extends Controller
     public function hapus_penggunaan_material_raw($id)
     {
         $penggunaan_material_buffer = Penggunaan_Material_Buffer::find($id);
+        $status = $penggunaan_material_buffer->status;
         $penggunaan_material_buffer->delete();
 
-        return redirect()->route('staff.form-penggunaan-material')->with('success', 'Data Material berhasil dihapus');
+        if($status == 1)
+            return redirect()->route('staff.form-penggunaan-material-gudang-kecil')->with('success', 'Data Material berhasil dihapus');
+        else if($status == 0)
+            return redirect()->route('staff.form-penggunaan-material')->with('success', 'Data Material berhasil dihapus');
     }
 
     // ------------------------------------------------
@@ -509,7 +514,6 @@ class StaffController extends Controller
 
         $material_inventory = Material_Inventory::all();
         
-
         foreach ($material_inventory as $key => $value) {
             for ($i=0; $i < count($kode_material[0]); $i++) { 
                 if($value->kode_material == $kode_material[0][$i] && $value->nama_material == $nama_material[0][$i]){
@@ -727,10 +731,232 @@ class StaffController extends Controller
         $penggunaan_material_buffer = Penggunaan_Material_Buffer::where('status', 1)->get();
         $len = count($penggunaan_material_buffer);
 
-        return view('staff.form_penggunaan_material_gudang_kecil', compact('penggunaan_material', 'penggunaan_material_buffer', 'len'));
+        return view('staff.form_penggunaan_material_gkecil', compact('penggunaan_material', 'penggunaan_material_buffer', 'len'));
     }
 
     // ------------------------------------------------
+
+    public function form_penggunaan_material_gudang_kecil_process(Request $request)
+    {
+        $id = $request->input('id_material_terpilih');
+        $spesifikasi = $request->input('spesifikasi');
+        $jumlah = $request->input('jumlah_material');
+
+        // ----------------------------
+
+        $penggunaan_material = Penggunaan_Material::find($id);
+        $penggunaan_material_buffer = new Penggunaan_Material_Buffer;
+
+        // ----------------------------
+
+        $penggunaan_material_buffer->nama_material = $penggunaan_material->nama_material;
+        $penggunaan_material_buffer->kode_material = $penggunaan_material->kode_material;
+        $penggunaan_material_buffer->spesifikasi = $spesifikasi;
+        $penggunaan_material_buffer->jumlah_akan_digunakan = $jumlah;
+        $penggunaan_material_buffer->status = 1;
+        $penggunaan_material_buffer->satuan = $penggunaan_material->satuan;
+        $penggunaan_material_buffer->save();
+
+        // ----------------------------
+
+        return redirect()->route('staff.form-penggunaan-material-gudang-kecil')->with('success', 'Data Material berhasil ditambahkan');
+    }
+
+    // ------------------------------------------------
+
+    public function form_penggunaan_material_gudang_kecil_process_final()
+    {
+        $penggunaan_material_buffer = Penggunaan_Material_Buffer::where('status', 1)->get();
+
+        $nama_material = array();
+        $spesifikasi = array();
+        $jumlah_akan_digunakan = array();
+        $kode_material = array();
+        $satuan = array();
+
+        // ----------------------------
+
+        foreach ($penggunaan_material_buffer as $key => $value) {
+            $nama_material[] = $value->nama_material;
+            $spesifikasi[] = $value->spesifikasi;
+            $jumlah_akan_digunakan[] = $value->jumlah_akan_digunakan;
+            $kode_material[] = $value->kode_material;
+            $satuan[] = $value->satuan;
+        }
+
+        // ----------------------------
+
+        $penggunaan_material = Penggunaan_Material::all();
+
+        foreach ($penggunaan_material as $key => $value) {
+            for($i = 0; $i < count($kode_material); $i++)
+            {
+                if($value->kode_material == $kode_material[$i] && $value->nama_material == $nama_material[$i]){
+                    $value->jumlah_yang_dipinjam = $value->jumlah_yang_dipinjam - $jumlah_akan_digunakan[$i];
+                    if ($value->jumlah_yang_dipinjam < 0) {
+                        return redirect()->route('staff.form-penggunaan-material-gudang-kecil')->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
+                    }
+                }
+            }
+        }
+
+        // ----------------------------
+
+        $nama_material = implode(",", $nama_material);
+        $spesifikasi = implode(",", $spesifikasi);
+        $jumlah_akan_digunakan = implode(",", $jumlah_akan_digunakan);
+        $kode_material = implode(",", $kode_material);
+        $satuan = implode(",", $satuan);
+
+        // ----------------------------
+
+        $penggunaan_gudang_kecil = new Penggunaan_Gudang_Kecil;
+        $penggunaan_gudang_kecil->nama_material = $nama_material;
+        $penggunaan_gudang_kecil->spesifikasi = $spesifikasi;
+        $penggunaan_gudang_kecil->jumlah_yang_dipinjam = $jumlah_akan_digunakan;
+        $penggunaan_gudang_kecil->kode_material = $kode_material;
+        $penggunaan_gudang_kecil->satuan = $satuan;
+        $penggunaan_gudang_kecil->status = 0;
+        $penggunaan_gudang_kecil->save();
+
+        // ----------------------------
+
+        $penggunaan_material_buffer->each->delete();
+
+        // ----------------------------
+
+        $notifikasi = new Notifikasi;
+        $notifikasi->user_input = Auth::user()->username;
+        $notifikasi->kegiatan = "meminta menggunakan material " . $nama_material . " dengan kode " . $kode_material . " sebanyak " . $jumlah_akan_digunakan . " " . $satuan . " ke staff pekerja";
+        $notifikasi->save();
+
+        // ----------------------------
+
+        return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Data Penggunaan Material berhasil ditambahkan');
+
+    }
+
+    // ------------------------------------------------
+
+    public function list_penggunaan_material_gudang_kecil()
+    {
+        $penggunaan_gudang_kecil = Penggunaan_Gudang_Kecil::all();
+
+        $nama_material = array();
+        $spesifikasi = array();
+        $jumlah_yang_dipinjam = array();
+        $kode_material = array();
+        $satuan = array();
+
+        // ----------------------------
+
+        foreach ($penggunaan_gudang_kecil as $key => $value) {
+            $nama_material[] = explode(",", $value->nama_material);
+            $spesifikasi[] = explode(",", $value->spesifikasi);
+            $jumlah_yang_dipinjam[] = explode(",", $value->jumlah_yang_dipinjam);
+            $kode_material[] = explode(",", $value->kode_material);
+            $satuan[] = explode(",", $value->satuan);
+        }
+
+        // ----------------------------
+
+        $i = 0;
+        foreach ($penggunaan_gudang_kecil as $key => $value) {
+            $value->nama_material = $nama_material[$i];
+            $value->spesifikasi = $spesifikasi[$i];
+            $value->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[$i];
+            $value->kode_material = $kode_material[$i];
+            $value->satuan = $satuan[$i];
+            $i++;
+        }
+
+        return view('staff.list_penggunaan_gudang_kecil', compact('penggunaan_gudang_kecil'));
+    }
+
+    // ------------------------------------------------
+
+    public function acc_penggunaan_material_gudang_kecil(Request $request)
+    {
+        $id = $request->input('id');
+        $penggunaan_gudang_kecil = Penggunaan_Gudang_Kecil::find($id);
+        $jumlah_yang_dipinjam = $penggunaan_gudang_kecil->jumlah_yang_dipinjam;
+
+        // ---------------------------
+
+        $nama_material = array();
+        $spesifikasi = array();
+        $jumlah_yang_dipinjam = array();
+        $kode_material = array();
+        $satuan = array();
+
+        $nama_material[] = explode(",", $penggunaan_gudang_kecil->nama_material);
+        $spesifikasi[] = explode(",", $penggunaan_gudang_kecil->spesifikasi);
+        $jumlah_yang_dipinjam[] = explode(",", $penggunaan_gudang_kecil->jumlah_yang_dipinjam);
+        $kode_material[] = explode(",", $penggunaan_gudang_kecil->kode_material);
+        $satuan[] = explode(",", $penggunaan_gudang_kecil->satuan);
+
+        // ----------------------------
+
+        $penggunaan_material = Penggunaan_Material::all();
+
+        foreach ($penggunaan_material as $key => $value) {
+            for ($i=0; $i < count($kode_material[0]); $i++) { 
+                if($value->kode_material == $kode_material[0][$i] && $value->nama_material == $nama_material[0][$i]){
+                    $value->jumlah_yang_dipinjam = $value->jumlah_yang_dipinjam - $jumlah_yang_dipinjam[0][$i];
+                    if ($value->jumlah_yang_dipinjam < 0) {
+                        return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
+                    }
+                    else{
+                        $value->save();
+                    }
+                }
+            }
+        }
+
+        // ----------------------------
+
+        $jumlah_data = count($nama_material[0]);
+        for($i=0; $i<$jumlah_data; $i++){
+            $penggunaan_gudang_kecil_satuan = Penggunaan_Gudang_Kecil::where('kode_material', $kode_material[0][$i])->where('status', 1)->get();
+            if($penggunaan_gudang_kecil_satuan->count() > 0){
+                $penggunaan_gudang_kecil_satuan = $penggunaan_gudang_kecil_satuan->first();
+                $penggunaan_gudang_kecil_satuan->jumlah_yang_dipinjam = $penggunaan_gudang_kecil_satuan->jumlah_yang_dipinjam + $jumlah_yang_dipinjam[0][$i];
+                $penggunaan_gudang_kecil_satuan->save();
+            }
+            else{
+                $penggunaan_gudang_kecil_satuan = new Penggunaan_Gudang_Kecil;
+                $penggunaan_gudang_kecil_satuan->nama_material = $nama_material[0][$i];
+                $penggunaan_gudang_kecil_satuan->status = 1;
+                $penggunaan_gudang_kecil_satuan->spesifikasi = $spesifikasi[0][$i];
+                $penggunaan_gudang_kecil_satuan->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[0][$i];
+                $penggunaan_gudang_kecil_satuan->kode_material = $kode_material[0][$i];
+                $penggunaan_gudang_kecil_satuan->satuan = $satuan[0][$i];
+                $penggunaan_gudang_kecil_satuan->save();
+            }
+        }
+
+         // ----------------------------
+
+         $penggunaan_gudang_kecil->delete();
+
+         // ----------------------------
+ 
+         return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Penggunaan Material berhasil disetujui');
+
+    }
+
+    // ------------------------------------------------
+
+    public function reject_penggunaan_material_gudang_kecil(Request $request)
+    {
+        $id = $request->input('id');
+        $penggunaan_material = Penggunaan_Gudang_Kecil::find($id);
+
+        $penggunaan_material->status = 2;
+        $penggunaan_material->save();
+
+        return redirect()->route('staff.list-penggunaan-material-gudang-kecil')->with('success', 'Penggunaan Material berhasil ditolak');
+    }
 
     public function export()
     {

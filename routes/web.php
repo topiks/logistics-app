@@ -74,7 +74,7 @@ Route::get('/te', [StaffController::class, 'display_export'])->name('display_exp
 */
 
 /*
-|---- STATUS PENGGUNAAN MATERIAL
+|---- STATUS PENGGUNAAN MATERIAL BUFFER
 |---- 0 = Penggunaan ke Gudang Kecil
 |---- 1 = Penggunaan ke Staff Pekerja
 */
@@ -149,6 +149,14 @@ Route::group(['middleware' => ['auth']], function () {
     // ----------------------
 
     Route::get('/form_penggunaan_material_gudang_kecil', [StaffController::class, 'form_penggunaan_material_gudang_kecil'])->name('staff.form-penggunaan-material-gudang-kecil');
+    Route::post('/form_penggunaan_material_gudang_kecil', [StaffController::class, 'form_penggunaan_material_gudang_kecil_process'])->name('staff.form-penggunaan-material-gudang-kecil-process');
+    Route::get('/form_penggunaan_material_gudang_kecil_process_final', [StaffController::class, 'form_penggunaan_material_gudang_kecil_process_final'])->name('staff.form-penggunaan-material-gudang-kecil-process-final');
+
+    // ----------------------
+
+    Route::get('/list_penggunaan_material_gudang_kecil', [StaffController::class, 'list_penggunaan_material_gudang_kecil'])->name('staff.list-penggunaan-material-gudang-kecil');
+    Route::post('/acc_penggunaan_material_gudang_kecil', [StaffController::class, 'acc_penggunaan_material_gudang_kecil'])->name('staff.acc-penggunaan-material-gudang-kecil');
+    Route::post('/reject_penggunaan_material_gudang_kecil', [StaffController::class, 'reject_penggunaan_material_gudang_kecil'])->name('staff.reject-penggunaan-material-gudang-kecil');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {

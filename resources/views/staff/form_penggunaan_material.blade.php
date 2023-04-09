@@ -72,7 +72,7 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-nama-material">Nama Material</label>
                                                 <select name="id_material_terpilih" class="custom-select custom-select-lg mb-3" required>
-                                                    <option hidden disabled selected>-- Pilih Material --</option>
+                                                    <option hidden disabled selected>-- Pilih Material di Gudang Besar --</option>
                                                     @foreach($material_inventory as $m)
                                                         <option value="{{$m->id}}">Nama : {{$m->nama_material}} | Kode : {{$m->kode_material}} | Stock : {{$m->jumlah}} {{$m->satuan}}</option>
                                                     @endforeach
