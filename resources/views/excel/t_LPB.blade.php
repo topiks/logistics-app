@@ -56,8 +56,8 @@
                 </th>
                 <th >
                 </th>
-                <th >
-                    No. DOKUMEN
+                <th colspan="3">
+                    No. DOKUMEN :
                 </th>
             </tr>
             <tr>
@@ -73,8 +73,8 @@
                 </th>
                 <th >
                 </th>
-                <th >
-                    TANGGAL
+                <th colspan="3">
+                    TANGGAL : <?= date('d-m-Y');?>
                 </th>
             </tr>
             <tr>
@@ -142,35 +142,41 @@
                     
                 </th>
             </tr>
+
+            <!-- data start -->
+            <?php $no = 0; ?>
+            @foreach($LPB as $lpb)
             <tr>
+                <?php $no++; ?>
                 <th>
-                    asd
+                    {{ $no }}
                 </th>
                 <th>
-                asd
+                    {{ $lpb->nama_barang }}
                 </th>
                 <th>
-                asd
+                    {{ $lpb->qty }}
                 </th>
                 <th>
-                asd
+                    {{ $lpb->sat }}
                 </th>
                 <th>
-                asd
+                    {{ $lpb->no_spbb_nota }}
                 </th>
                 <th>
-                asd
+                    {{ $lpb->pemasok }}
                 </th>
                 <th>
-                asd
                 </th>
                 <th>
-                asd
                 </th>
                 <th>
-                asd
+                    {{ $lpb->no_order }}
                 </th>
             </tr>
+            @endforeach
+
+            <!-- data end -->
 
             <!-- mengetahui  -->
 

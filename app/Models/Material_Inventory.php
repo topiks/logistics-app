@@ -25,5 +25,9 @@ class Material_Inventory extends Model
         'eda',
         'dokumen_material',
         'dokumen_an',
+        'acc_notice_pqc',
+        'op_no',
+        'bpm_no',
+        'dokumen_bpm',
     ];
 }

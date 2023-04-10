@@ -99,6 +99,7 @@
                                                     <th>Diupdate Tanggal</th>
                                                     <th>Aksi</th>
                                                     <th>Dokumen Acceptance Notice</th>
+                                                    <th>BPM</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -129,8 +130,15 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-md bg-primary mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
-                                                            Acceptance Notice
+                                                        <a href="/storage/acceptance_notice/{{$m->dokumen_an}}" target="_blank">
+                                                            <button class="btn btn-md bg-primary mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
+                                                                Acceptance Notice
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-md bg-success mr-3" style="color: white;" data-toggle="modal" data-target="#bpm_modal" onclick="bpm({{ $m->id }});">
+                                                            BPM
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -152,6 +160,25 @@
         </div>
     </div>
 
+     <!-- Export BPM  -->
+     <div class="modal fade" id="bpm_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Export BPM ?</h3>
+                    <div class="modal-footer">
+                        <a id="export_bpm" href="">
+                            <button id="loloskan" href="" type="submit" class="btn btn-success">Export</button>
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- UPDATE STOCK -->
     <div class="modal fade" id="update-stock" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -183,7 +210,9 @@
             document.getElementById('id_material').value = id;
             document.getElementById('stock').value = jumlah;
         }
+        function bpm(id) {
+            document.getElementById('export_bpm').setAttribute('href', '/export_bpm/' + id);
+        }
     </script>
-
 
 @endsection

@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('kode_material');
             $table->string('satuan');
             $table->string('jumlah_yang_dipinjam');
+            $table->string('nomor_seri');
+            $table->string('nomor_order');
+            $table->string('pemesan');
+            $table->string('nomor_bpg')->nullable();
             $table->timestamps();
         });
     }

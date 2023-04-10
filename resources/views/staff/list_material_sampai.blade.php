@@ -149,10 +149,10 @@
                                                     </td>
                                                     <td>
                                                     @if (Auth::user()->role == 1 || Auth::user()->role == 2)
-                                                        @if ($m->status != 4)
-                                                        <button class="btn btn-md bg-primary mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
-                                                            LPB
-                                                        </button>
+                                                        @if ($m->status != 4 && $m->status != 1)
+                                                            <button class="btn btn-md bg-primary mr-3" style="color: white;" data-toggle="modal" data-target="#lpb" onclick="lpb({{ $m->id }});">
+                                                                LPB
+                                                            </button>
                                                         @endif
 
                                                         @if ($m->status == 0)
@@ -210,6 +210,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Export LPB  -->
+    <div class="modal fade" id="lpb" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Export LPB ?</h3>
+                
+                    <div class="modal-footer">
+                        <a id="export_lpb" href="">
+                            <button id="loloskan" href="" type="submit" class="btn btn-default">Export</button>
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
     
     <!-- Rejected -->
     <div class="modal fade" id="reject-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -246,7 +265,20 @@
                             <label for="input-file-syarat-kedatangan">Lampirkan File AN (Acceptance Notice) dalam PDF</label>
                             <input name="file-an" accept="application/pdf" type="file" class="form-control-file" required>
                         </div>
+                        <div class="form-group" hidden>
+                            <label class="form-control-label" for="input-stock">ACC. Notice (PQC)</label>
+                            <input name="acc_notice_pqc" type="text" class="form-control" value="0" required>
+                        </div>
                         <div class="form-group">
+                            <label class="form-control-label" for="input-stock">OP No.</label>
+                            <input name="op_no" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-stock">BPM. No</label>
+                            <input name="bpm_no" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-stock">Lokasi Penyimpanan</label>
                             <select name="tempat-penyimpanan" class="custom-select custom-select-lg mb-3" required>
                                 <option hidden disabled selected>-- Pilih Lokasi Penyimpanan Material --</option>
                                 <option value="Area B3">Area B3</option>
@@ -307,6 +339,10 @@
 
         function return_material(id) {
             document.getElementById('id_return_mat').setAttribute('value', id);
+        }
+
+        function lpb(id) {
+            document.getElementById('export_lpb').setAttribute('href', '/export_lpb/' + id);
         }
     </script>
 

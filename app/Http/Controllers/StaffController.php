@@ -22,11 +22,14 @@ use App\Models\Penggunaan_Gudang_Kecil;
 use App\Models\Request_Stock_Buffer;
 use App\Models\Request_Stock;
 use App\Models\Notifikasi;
+use App\Models\LPB;
+use App\Models\BPM;
 
 use App\Mail\MyMail;
 
 use App\Imports\LPBImport;
 use App\Exports\LPBexport;
+use App\Exports\BPMexport;
 use App\Exports\DB_Export;
 
 
@@ -216,6 +219,9 @@ class StaffController extends Controller
     {
         $id = $request->input('id');
         $lokasi = $request->input('tempat-penyimpanan');
+        $acc_notice_pqc = $request->input('acc_notice_pqc');
+        $op_no = $request->input('op_no');
+        $bpm_no = $request->input('bpm_no');
         
         // ----------------------------
 
@@ -255,6 +261,9 @@ class StaffController extends Controller
             $material_inventory->eda = $material_sampai->eda;
             $material_inventory->dokumen_material = $material_sampai->dokumen_material;
             $material_inventory->dokumen_an = $request->file('file-an')->getClientOriginalName();
+            $material_inventory->acc_notice_pqc = $acc_notice_pqc;
+            $material_inventory->op_no = $op_no;
+            $material_inventory->bpm_no = $bpm_no;
 
             $material_inventory->save();
         }
@@ -410,8 +419,12 @@ class StaffController extends Controller
 
     // ------------------------------------------------
 
-    public function form_penggunaan_material_process()
+    public function form_penggunaan_material_process(Request $request)
     {
+        $nomor_seri = $request->input('nomor_seri');
+        $nomor_order = $request->input('nomor_order');
+        $pemesan = $request->input('pemesan');
+
         $penggunaan_material_buffer = Penggunaan_Material_Buffer::where('status', 0)->get();
 
         $nama_material = array();
@@ -462,6 +475,9 @@ class StaffController extends Controller
         $penggunaan_material->jumlah_yang_dipinjam = $jumlah_akan_digunakan;
         $penggunaan_material->kode_material = $kode_material;
         $penggunaan_material->satuan = $satuan;
+        $penggunaan_material->nomor_seri = $nomor_seri;
+        $penggunaan_material->nomor_order = $nomor_order;
+        $penggunaan_material->pemesan = $pemesan;
         $penggunaan_material->save();
 
         // ----------------------------
@@ -525,10 +541,12 @@ class StaffController extends Controller
     }
 
     // ------------------------------------------------
-
+    // ISEK SALAH NDE QTY YANG DISERAHKAN DAN NOMOR BPM BUKAN DARI INPUT // BENAKKE SENG BPM DISEK COK
     public function acc_penggunaan_gudang_kecil(Request $request)
     {
         $id = $request->input('id');
+        $nomor_bpg = $request->input('nomor_bpg');
+
         $penggunaan_material = Penggunaan_Material::find($id);
         $jumlah_yang_dipinjam = $penggunaan_material->jumlah_yang_dipinjam;
 
@@ -582,6 +600,10 @@ class StaffController extends Controller
                 $penggunaan_material_satuan->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[0][$i];
                 $penggunaan_material_satuan->kode_material = $kode_material[0][$i];
                 $penggunaan_material_satuan->satuan = $satuan[0][$i];
+                $penggunaan_material_satuan->nomor_seri = $penggunaan_material->nomor_seri;
+                $penggunaan_material_satuan->nomor_order = $penggunaan_material->nomor_order;
+                $penggunaan_material_satuan->pemesan = $penggunaan_material->pemesan;
+                $penggunaan_material_satuan->nomor_bpg = $nomor_bpg;
                 $penggunaan_material_satuan->save();
             }
         }
@@ -1079,15 +1101,106 @@ class StaffController extends Controller
 
     // ------------------------------------------------
 
+    public function export_lpb($id)
+    {
+        $material_sampai = Material_Sampai::find($id);
+
+        // ----------------------------
+
+        $lpb_old = LPB::all();
+        $lpb_old->each->delete();
+
+        // ----------------------------
+
+        $nama_barang = $material_sampai->nama_material;
+        $qty = $material_sampai->jumlah;
+        $sat = $material_sampai->satuan;
+        $no_spbb_nota = $material_sampai->nomor_spbb_nota;
+        $pemasok = $material_sampai->pemasok;
+        $no_order = $material_sampai->nomor_order; 
+
+        // ----------------------------
+
+        $nama_barang_arr = array();
+        $qty_arr = array();
+        $sat_arr = array();
+
+        // ----------------------------
+
+        $nama_barang_arr = explode(",", $nama_barang);
+        $qty_arr = explode(",", $qty);
+        $sat_arr = explode(",", $sat);
+
+        // ----------------------------
+
+        for($i=0; $i<count($nama_barang_arr); $i++){
+            $lpb = new LPB;
+            $lpb->nama_barang = $nama_barang_arr[$i];
+            $lpb->qty = $qty_arr[$i];
+            $lpb->sat = $sat_arr[$i];
+            $lpb->no_spbb_nota = $no_spbb_nota;
+            $lpb->pemasok = $pemasok;
+            $lpb->no_order = $no_order;
+            $lpb->save();
+        }
+
+        return Excel::download(new LPBExport, 'LPB_'.$material_sampai->nomor_order.'.xlsx');
+    }
+
+    // ------------------------------------------------
+
+    public function export_bpm($id) 
+    {
+        $material_inventory = Material_Inventory::find($id);
+        $no_bpm = $material_inventory->bpm_no;
+
+        // ----------------------------
+
+        $material_inventory_this_bpm = Material_Inventory::where('bpm_no', $no_bpm)->get();
+
+        // ----------------------------
+
+        $bpm_old = BPM::all();
+        $bpm_old->each->delete();
+
+        // ----------------------------
+
+        foreach($material_inventory_this_bpm as $material){
+            $bpm = new BPM;
+            $bpm->order_masuk_no = $material->nomor_order;
+            $bpm->acc_notice_pqc = 0;
+            $bpm->op_no = $material->op_no;
+            $bpm->bpm_no = $no_bpm;
+            $bpm->uraian_material = $material->nama_material;
+            $bpm->no_kode = $material->kode_material;
+            $bpm->satuan = $material->satuan;
+            $bpm->qty = $material->jumlah;
+            $bpm->nama_supplier = $material->pemasok;
+            $bpm->save();
+        }
+        
+        return Excel::download(new BPMExport, 'BPM_'.$material_inventory->bpm_no.'.xlsx');
+
+    }
+
+    // ------------------------------------------------
+
     public function export()
     {
-        // download with styles
-        return Excel::download(new LPBExport, 'LPB_coba.xlsx');
+        // lpb
+        // return Excel::download(new LPBExport, 'LPB_coba.xlsx');
+
+        // bpm
+        return Excel::download(new BPMExport, 'BPM_coba.xlsx');
     }
 
     public function display_export()
     {
-        return view('excel.t_LPB');
+        // lpb
+        // return view('excel.t_LPB');
+
+        // bpm
+        return view('excel.t_BPM');
     }
 
 

@@ -104,7 +104,7 @@
 
     <div class="modal fade" id="gunakan-material-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <!-- <div class="modal-content">
                 <div class="modal-body">
                     <h3 class="mt-3">Gunakan Material ?</h3>
                 </div>
@@ -114,6 +114,31 @@
                     </a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 </div>
+            </div> -->
+
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Gunakan Material ?</h3>
+                    <form action="{{ route('staff.form-penggunaan-material-process') }}" enctype="multipart/form-data" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-school">Nomor Seri</label>
+                            <input name="nomor_seri" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-school">Nomor Order</label>
+                            <input name="nomor_order" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-school">Pemesan</label>
+                            <input name="pemesan" type="text" class="form-control" required>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="loloskan" href="" type="submit" class="btn btn-primary">Gunakan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+                </form>
             </div>
         </div>
     </div>

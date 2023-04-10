@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('export_lpb', function (Blueprint $table) {
+        Schema::create('export_bpg', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_barang');
-            $table->string('qty');
-            $table->string('sat');
-            $table->string('no_spbb_nota');
-            $table->string('pemasok');
-            $table->string('no_order');
+            $table->string('material');
+            $table->string('spesifikasi');
+            $table->string('jumlah');
+            $table->string('kode_barang');
+            $table->string('nomor_bpm');
+            $table->string('qty_penyerahan');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_l_p_b');
+        Schema::dropIfExists('bpg');
     }
 };

@@ -9,10 +9,15 @@ class LPB extends Model
 {
     use HasFactory;
 
-    protected $table = 'import_lpb';
+    protected $table = 'export_lpb';
 
     protected $fillable = 
     [
-        'nama_material'
+        'nama_barang',
+        'qty',
+        'sat',
+        'no_spbb_nota',
+        'pemasok',
+        'no_order'
     ];
 }

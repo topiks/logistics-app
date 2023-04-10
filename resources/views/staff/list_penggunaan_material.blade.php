@@ -199,6 +199,11 @@
                     <h3 class="mt-3">Setujui Penggunaan Material ke Gudang Kecil ?</h3>
                     <form action="{{ route('staff.acc-penggunaan-gudang-kecil') }}" enctype="multipart/form-data" method="post">
                         @csrf
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-school">Jumlah Penyerahan</label>
+                            <input name="jumlah_penyerahan" type="text" class="form-control" required>
+                        </div>
+
                         <div class="form-group" hidden>
                             <label class="form-control-label" for="input-school">id</label>
                             <input id="id_material_accept" name="id" type="text" class="form-control" required>

@@ -148,7 +148,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // ----------------------
 
-    Route::get('/form_penggunaan_material_process', [StaffController::class, 'form_penggunaan_material_process'])->name('staff.form-penggunaan-material-process');
+    Route::post('/form_penggunaan_material_process', [StaffController::class, 'form_penggunaan_material_process'])->name('staff.form-penggunaan-material-process');
     Route::get('/list_penggunaan_material/{kode}', [StaffController::class, 'list_penggunaan_material'])->name('staff.list-penggunaan-material');
 
     Route::get('/form_request_restock_material', [StaffController::class, 'form_request_restock_material'])->name('staff.form-request-restock-material');
@@ -167,6 +167,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/list_penggunaan_material_gudang_kecil/{kode}', [StaffController::class, 'list_penggunaan_material_gudang_kecil'])->name('staff.list-penggunaan-material-gudang-kecil');
     Route::post('/acc_penggunaan_material_gudang_kecil', [StaffController::class, 'acc_penggunaan_material_gudang_kecil'])->name('staff.acc-penggunaan-material-gudang-kecil');
     Route::post('/reject_penggunaan_material_gudang_kecil', [StaffController::class, 'reject_penggunaan_material_gudang_kecil'])->name('staff.reject-penggunaan-material-gudang-kecil');
+
+    // ----------------------
+
+    Route::get('/export_lpb/{id}', [StaffController::class, 'export_lpb'])->name('staff.export-lpb');
+    Route::get('/export_bpm/{id}', [StaffController::class, 'export_bpm'])->name('staff.export-bpm');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {
