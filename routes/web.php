@@ -53,7 +53,7 @@ Route::get('/exp_db/{kode}', [StaffController::class, 'export_db'])->name('expor
 /*
 |---- ROLE ACCOUNT
 |---- 0 = Admin
-|---- 1 = Spy Management Material
+|---- 1 = Spv Management Material
 |---- 2 = Staff Gudang Utama
 |---- 3 = Staff Gudang Workshop
 |---- 4 = Staff Pengadaan

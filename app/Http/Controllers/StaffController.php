@@ -603,6 +603,7 @@ class StaffController extends Controller
                 $penggunaan_material_satuan = $penggunaan_material_satuan->first();
                 $penggunaan_material_satuan->jumlah_yang_dipinjam = $penggunaan_material_satuan->jumlah_yang_dipinjam + $jumlah_penyerahan[0][$i];
                 $penggunaan_material_satuan->save();
+                echo "ada";
             }
             else{
                 $penggunaan_material_satuan = new Penggunaan_Material;
@@ -619,6 +620,7 @@ class StaffController extends Controller
                 $penggunaan_material_satuan->nomor_bpm = $penggunaan_material->nomor_bpm;
                 $penggunaan_material_satuan->nomor_bpg = $nomor_bpg;
                 $penggunaan_material_satuan->save();
+                echo "tidak ada";
             }
         }
 
@@ -1261,7 +1263,4 @@ class StaffController extends Controller
         // bpg
         return view('excel.t_BPG');
     }
-
-
-
 }

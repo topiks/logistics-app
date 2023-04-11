@@ -134,13 +134,17 @@
                                                             <li>{{$s}}</li>
                                                         @endforeach
                                                     <td>
-                                                        @if($m->jumlah_yang_diserahkan != null)
-                                                            @foreach($m->jumlah_yang_diserahkan as $j)
+                                                        @if($m->status == 1)
+                                                            @foreach($m->jumlah_yang_dipinjam as $j)
                                                                 <li>{{$j}}</li>
                                                             @endforeach
-                                                        @else
+                                                        @elseif($m->status == 0)
                                                             @foreach($m->jumlah_yang_dipinjam as $j)
                                                                 <li>{{$j}} <span class="badge badge-warning">Menunggu</span></li>
+                                                            @endforeach
+                                                        @elseif($m->status == 2)
+                                                            @foreach($m->jumlah_yang_dipinjam as $j)
+                                                                <li>{{$j}} <span class="badge badge-danger">Ditolak</span></li>
                                                             @endforeach
                                                         @endif
                                                     </td>

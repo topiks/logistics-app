@@ -63,7 +63,7 @@
                                                             <td>{{$u->username}}</td>
                                                             <td>
                                                                 @if ($u->role == 1)
-                                                                    Spy Management Material
+                                                                    Spv Management Material
                                                                 @endif
                                                                 @if ($u->role == 2)
                                                                     Staff Gudang Utama

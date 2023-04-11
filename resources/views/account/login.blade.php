@@ -8,9 +8,13 @@
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" method="post" action="{{ route('user.login') }}">
 					@csrf
-					<span class="login100-form-title p-b-43">
+					<span class="login100-form-title p-b-25">
                         BBI Warehouse Material System Login
 					</span>
+
+					<div class="hero mb-4" style="text-align:center">
+						<img src="/general/images/logo-full-ori.png" alt="" width="200px">
+					</div>
 					
 					@if ($notification = Session::get('failed'))
 					<div class="alert alert-danger" role="alert">

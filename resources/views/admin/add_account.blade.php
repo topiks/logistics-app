@@ -53,7 +53,7 @@
                                                 <label class="form-control-label" for="input-school">Role</label>
                                                 <select name="role" class="custom-select custom-select-lg mb-3" required>
                                                     <option hidden disabled selected>-- Pilih Role --</option>
-                                                    <option value="1">Spy Management Material</option>
+                                                    <option value="1">Spv Management Material</option>
                                                     <option value="2">Staff Gudang Utama</option>
                                                     <option value="3">Staff Gudang Workshop</option>
                                                     <option value="4">Staff Pengadaan</option>

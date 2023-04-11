@@ -112,7 +112,11 @@
                                                         {{$m->nama_material}}
                                                     </td>
                                                     <td>
-                                                        {{$m->jumlah}}
+                                                        @if ($m->jumlah <= 2)
+                                                            <p style="font-size:13px; color:red"> {{$m->jumlah}} </p>
+                                                        @else
+                                                            {{$m->jumlah}}
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         {{$m->satuan}}

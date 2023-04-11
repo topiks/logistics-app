@@ -157,12 +157,6 @@
                                                             @endif
 
                                                         @endif
-
-                                                        @if($m->status == 1)
-                                                                <button class="btn btn-md bg-primary mr-3" style="color: white;">
-                                                                    BPG
-                                                                </button>
-                                                        @endif
                                                     </td>
                                                 </tr>
                                                 @endforeach

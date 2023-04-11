@@ -149,7 +149,7 @@
                                                     </td>
                                                     <td>
                                                     @if (Auth::user()->role == 1 || Auth::user()->role == 2)
-                                                        @if ($m->status != 4 && $m->status != 1)
+                                                        @if ($m->status != 4 && $m->status != 1 && $m->status != 3)
                                                             <button class="btn btn-md bg-primary mr-3" style="color: white;" data-toggle="modal" data-target="#lpb" onclick="lpb({{ $m->id }});">
                                                                 LPB
                                                             </button>
