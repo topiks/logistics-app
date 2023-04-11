@@ -24,12 +24,14 @@ use App\Models\Request_Stock;
 use App\Models\Notifikasi;
 use App\Models\LPB;
 use App\Models\BPM;
+use App\Models\BPG;
 
 use App\Mail\MyMail;
 
 use App\Imports\LPBImport;
 use App\Exports\LPBexport;
 use App\Exports\BPMexport;
+use App\Exports\BPGexport;
 use App\Exports\DB_Export;
 
 
@@ -395,6 +397,7 @@ class StaffController extends Controller
         $penggunaan_material_buffer->kode_material = $material_inventory->kode_material;
         $penggunaan_material_buffer->satuan = $material_inventory->satuan;
         $penggunaan_material_buffer->jumlah_akan_digunakan = $jumlah_akan_digunakan;
+        $penggunaan_material_buffer->nomor_bpm = $material_inventory->bpm_no;
 
         // ----------------------------
 
@@ -478,6 +481,7 @@ class StaffController extends Controller
         $penggunaan_material->nomor_seri = $nomor_seri;
         $penggunaan_material->nomor_order = $nomor_order;
         $penggunaan_material->pemesan = $pemesan;
+        $penggunaan_material->nomor_bpm = $penggunaan_material_buffer->first()->nomor_bpm;
         $penggunaan_material->save();
 
         // ----------------------------
@@ -512,6 +516,7 @@ class StaffController extends Controller
         $nama_material = array();
         $spesifikasi = array();
         $jumlah_yang_dipinjam = array();
+        $jumlah_yang_diserahkan = array();
         $kode_material = array();
         $satuan = array();
 
@@ -521,6 +526,7 @@ class StaffController extends Controller
             $nama_material[] = explode(",", $value->nama_material);
             $spesifikasi[] = explode(",", $value->spesifikasi);
             $jumlah_yang_dipinjam[] = explode(",", $value->jumlah_yang_dipinjam);
+            $jumlah_yang_diserahkan[] = explode(",", $value->jumlah_yang_diserahkan);
             $kode_material[] = explode(",", $value->kode_material);
             $satuan[] = explode(",", $value->satuan);
         }
@@ -532,6 +538,7 @@ class StaffController extends Controller
             $value->nama_material = $nama_material[$i];
             $value->spesifikasi = $spesifikasi[$i];
             $value->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[$i];
+            $value->jumlah_yang_diserahkan = $jumlah_yang_diserahkan[$i];
             $value->kode_material = $kode_material[$i];
             $value->satuan = $satuan[$i];
             $i++;
@@ -541,11 +548,14 @@ class StaffController extends Controller
     }
 
     // ------------------------------------------------
-    // ISEK SALAH NDE QTY YANG DISERAHKAN DAN NOMOR BPM BUKAN DARI INPUT // BENAKKE SENG BPM DISEK COK
+    
     public function acc_penggunaan_gudang_kecil(Request $request)
     {
         $id = $request->input('id');
-        $nomor_bpg = $request->input('nomor_bpg');
+        $jumlah_penyerahan_raw = $request->input('jumlah_penyerahan');
+        $nomor_bpg = $request->input('no_bpg');
+
+        // ----------------------------
 
         $penggunaan_material = Penggunaan_Material::find($id);
         $jumlah_yang_dipinjam = $penggunaan_material->jumlah_yang_dipinjam;
@@ -555,12 +565,14 @@ class StaffController extends Controller
         $nama_material = array();
         $spesifikasi = array();
         $jumlah_yang_dipinjam = array();
+        $jumlah_penyerahan = array();
         $kode_material = array();
         $satuan = array();
 
         $nama_material[] = explode(",", $penggunaan_material->nama_material);
         $spesifikasi[] = explode(",", $penggunaan_material->spesifikasi);
         $jumlah_yang_dipinjam[] = explode(",", $penggunaan_material->jumlah_yang_dipinjam);
+        $jumlah_penyerahan[] = explode(",", $jumlah_penyerahan_raw);
         $kode_material[] = explode(",", $penggunaan_material->kode_material);
         $satuan[] = explode(",", $penggunaan_material->satuan);
 
@@ -571,7 +583,7 @@ class StaffController extends Controller
         foreach ($material_inventory as $key => $value) {
             for ($i=0; $i < count($kode_material[0]); $i++) { 
                 if($value->kode_material == $kode_material[0][$i] && $value->nama_material == $nama_material[0][$i]){
-                    $value->jumlah = $value->jumlah - $jumlah_yang_dipinjam[0][$i];
+                    $value->jumlah = $value->jumlah - $jumlah_penyerahan[0][$i];
                     if ($value->jumlah < 0) {
                         return redirect()->route('staff.list-penggunaan-material', ['kode' => 0])->with('failed', 'Jumlah Material '. $value->nama_material .' tidak mencukupi');
                     }
@@ -589,7 +601,7 @@ class StaffController extends Controller
             $penggunaan_material_satuan = Penggunaan_Material::where('kode_material', $kode_material[0][$i])->where('status', 1)->get();
             if($penggunaan_material_satuan->count() > 0){
                 $penggunaan_material_satuan = $penggunaan_material_satuan->first();
-                $penggunaan_material_satuan->jumlah_yang_dipinjam = $penggunaan_material_satuan->jumlah_yang_dipinjam + $jumlah_yang_dipinjam[0][$i];
+                $penggunaan_material_satuan->jumlah_yang_dipinjam = $penggunaan_material_satuan->jumlah_yang_dipinjam + $jumlah_penyerahan[0][$i];
                 $penggunaan_material_satuan->save();
             }
             else{
@@ -598,11 +610,13 @@ class StaffController extends Controller
                 $penggunaan_material_satuan->status = 1;
                 $penggunaan_material_satuan->spesifikasi = $spesifikasi[0][$i];
                 $penggunaan_material_satuan->jumlah_yang_dipinjam = $jumlah_yang_dipinjam[0][$i];
+                $penggunaan_material_satuan->jumlah_yang_diserahkan = $jumlah_penyerahan[0][$i];
                 $penggunaan_material_satuan->kode_material = $kode_material[0][$i];
                 $penggunaan_material_satuan->satuan = $satuan[0][$i];
                 $penggunaan_material_satuan->nomor_seri = $penggunaan_material->nomor_seri;
                 $penggunaan_material_satuan->nomor_order = $penggunaan_material->nomor_order;
                 $penggunaan_material_satuan->pemesan = $penggunaan_material->pemesan;
+                $penggunaan_material_satuan->nomor_bpm = $penggunaan_material->nomor_bpm;
                 $penggunaan_material_satuan->nomor_bpg = $nomor_bpg;
                 $penggunaan_material_satuan->save();
             }
@@ -639,7 +653,7 @@ class StaffController extends Controller
         $notifikasi->kegiatan = "menolak penggunaan material " . $penggunaan_material->nama_material . " dengan kode material " . $penggunaan_material->kode_material . " dari gudang besar ke gudang kecil";
         $notifikasi->save();
 
-        return redirect()->route('staff.list-penggunaan-material')->with('success', 'Penggunaan Material berhasil ditolak');
+        return redirect()->route('staff.list-penggunaan-material', ['kode' => 0])->with('success', 'Penggunaan Material berhasil ditolak');
 
     }
 
@@ -1185,13 +1199,55 @@ class StaffController extends Controller
 
     // ------------------------------------------------
 
+    public function export_bpg($id)
+    {
+        $penggunaan_material = Penggunaan_Material::find($id);
+        $no_seri = $penggunaan_material->nomor_seri;
+        $no_order = $penggunaan_material->nomor_order;
+        $pemesan = $penggunaan_material->pemesan;
+        $no_bpg = $penggunaan_material->nomor_bpg;
+
+        // ----------------------------
+
+        $penggunaan_material_this_bpg = Penggunaan_Material::where('nomor_bpg', $no_bpg)->get();
+
+        // ----------------------------
+
+        $bpg_old = BPG::all();
+        $bpg_old->each->delete();
+
+        // ----------------------------
+
+        foreach($penggunaan_material_this_bpg as $material){
+            $bpg = new BPG;
+            $bpg->material = $material->nama_material;
+            $bpg->spesifikasi = $material->spesifikasi;
+            $bpg->jumlah = $material->jumlah_yang_dipinjam;
+            $bpg->kode_barang = $material->kode_material;
+            $bpg->nomor_bpm = $material->nomor_bpm;
+            $bpg->qty_penyerahan = $material->jumlah_yang_diserahkan;
+            $bpg->no_seri = $material->nomor_seri;
+            $bpg->no_order = $material->nomor_order;
+            $bpg->pemesan = $material->pemesan;
+            $bpg->nomor_bpg = $material->nomor_bpg;
+            $bpg->save();
+        }
+
+        return Excel::download(new BPGExport, 'BPG_'.$penggunaan_material->nomor_bpg.'.xlsx');
+    }
+
+    // ------------------------------------------------
+
     public function export()
     {
         // lpb
         // return Excel::download(new LPBExport, 'LPB_coba.xlsx');
 
         // bpm
-        return Excel::download(new BPMExport, 'BPM_coba.xlsx');
+        // return Excel::download(new BPMExport, 'BPM_coba.xlsx');
+
+        // bpg
+        return Excel::download(new BPGExport, 'BPG_coba.xlsx');
     }
 
     public function display_export()
@@ -1200,7 +1256,10 @@ class StaffController extends Controller
         // return view('excel.t_LPB');
 
         // bpm
-        return view('excel.t_BPM');
+        // return view('excel.t_BPM');
+
+        // bpg
+        return view('excel.t_BPG');
     }
 
 

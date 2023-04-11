@@ -172,6 +172,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/export_lpb/{id}', [StaffController::class, 'export_lpb'])->name('staff.export-lpb');
     Route::get('/export_bpm/{id}', [StaffController::class, 'export_bpm'])->name('staff.export-bpm');
+    Route::get('/export_bpg/{id}', [StaffController::class, 'export_bpg'])->name('staff.export-bpg');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {

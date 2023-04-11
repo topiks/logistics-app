@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BPM extends Model
+class BPG extends Model
 {
     use HasFactory;
 
@@ -18,5 +18,9 @@ class BPM extends Model
         'kode_barang',
         'nomor_bpm',
         'qty_penyerahan',
+        'no_seri',
+        'no_order',
+        'pemesan',
+        'nomor_bpg',
     ];
 }

@@ -18,9 +18,11 @@ class Penggunaan_Material extends Model
         'kode_material',
         'satuan',
         'jumlah_yang_dipinjam',
+        'jumlah_yang_diserahkan',
         'nomor_seri',
         'nomor_order',
         'pemesan',
         'nomor_bpg',
+        'nomor_bpm',
     ];
 }

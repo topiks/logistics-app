@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('kode_barang');
             $table->string('nomor_bpm');
             $table->string('qty_penyerahan');
+            $table->string('no_seri');
+            $table->string('no_order');
+            $table->string('pemesan');
+            $table->string('nomor_bpg');
             $table->timestamps();
         });
     }

@@ -18,5 +18,6 @@ class Penggunaan_Material_Buffer extends Model
         'satuan',
         'jumlah_akan_digunakan',
         'project',
+        'nomor_bpm',
     ];
 }

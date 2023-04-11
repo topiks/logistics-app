@@ -28,7 +28,7 @@
 
                 </th>
                 <th colspan="5">
-                    BUKT PENERIMAAN MATERIAL (BPM)
+                    BUKTI PENERIMAAN MATERIAL (BPM)
                 </th>
             </tr>
             <tr>
@@ -130,10 +130,8 @@
                     {{$bpm->qty}}
                 </th>
                 <th >
-                    asd 
                 </th>
                 <th >
-                    asd
                 </th>
             </tr>
             @endforeach

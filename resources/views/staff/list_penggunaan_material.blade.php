@@ -134,9 +134,15 @@
                                                             <li>{{$s}}</li>
                                                         @endforeach
                                                     <td>
-                                                        @foreach($m->jumlah_yang_dipinjam as $j)
-                                                            <li>{{$j}}</li>
-                                                        @endforeach
+                                                        @if($m->jumlah_yang_diserahkan != null)
+                                                            @foreach($m->jumlah_yang_diserahkan as $j)
+                                                                <li>{{$j}}</li>
+                                                            @endforeach
+                                                        @else
+                                                            @foreach($m->jumlah_yang_dipinjam as $j)
+                                                                <li>{{$j}} <span class="badge badge-warning">Menunggu</span></li>
+                                                            @endforeach
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         @foreach($m->satuan as $s)
@@ -167,9 +173,9 @@
                                                         @endif
 
                                                         @if($m->status == 1)
-                                                                <button class="btn btn-md bg-primary mr-3" style="color: white;">
-                                                                    BPG
-                                                                </button>
+                                                            <button class="btn btn-md bg-primary mr-3" style="color: white;" data-toggle="modal" data-target="#bpg" onclick="bpg({{ $m->id }});">
+                                                                BPG
+                                                            </button>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -191,6 +197,25 @@
         </div>
     </div>
 
+    <!-- Export BPG  -->
+    <div class="modal fade" id="bpg" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Export BPG ?</h3>
+                
+                    <div class="modal-footer">
+                        <a id="export_bpg" href="">
+                            <button id="loloskan" href="" type="submit" class="btn btn-primary">Export</button>
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
 <!-- Accepted -->
 <div class="modal fade" id="acc-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -200,7 +225,12 @@
                     <form action="{{ route('staff.acc-penggunaan-gudang-kecil') }}" enctype="multipart/form-data" method="post">
                         @csrf
                         <div class="form-group">
-                            <label class="form-control-label" for="input-school">Jumlah Penyerahan</label>
+                            <label class="form-control-label" for="input-school">Nomor BPG</label>
+                            <input name="no_bpg" type="text" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-school">Jumlah Penyerahan (pisahkan dengan koma ',' apabila material banyak)</label>
                             <input name="jumlah_penyerahan" type="text" class="form-control" required>
                         </div>
 
@@ -217,6 +247,7 @@
             </div>
         </div>
     </div>
+
 
 <!-- Rejected -->
 <div class="modal fade" id="reject-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -240,15 +271,19 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-        function accept_material(id) {
-            document.getElementById('id_material_accept').setAttribute('value', id);
-        }
+<script type="text/javascript">
+    function accept_material(id) {
+        document.getElementById('id_material_accept').setAttribute('value', id);
+    }
 
-        function reject_material(id) {
-            document.getElementById('id_reject_accept').setAttribute('value', id);
-        }
+    function reject_material(id) {
+        document.getElementById('id_reject_accept').setAttribute('value', id);
+    }
 
-    </script>
+    function bpg(id) {
+        document.getElementById('export_bpg').setAttribute('href', '/export_bpg/' + id);
+    }
+
+</script>
 
 @endsection
