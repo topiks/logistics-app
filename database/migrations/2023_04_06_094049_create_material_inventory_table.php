@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('pemasok');
             $table->string('eda');
             $table->string('dokumen_material');
-            $table->string('dokumen_an');
+            $table->string('dokumen_an')->nullable();
             $table->string('acc_notice_pqc')->nullable();
             $table->string('op_no')->nullable();
             $table->string('bpm_no')->nullable();

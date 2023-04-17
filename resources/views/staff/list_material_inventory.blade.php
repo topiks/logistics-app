@@ -134,11 +134,15 @@
                                                         @endif
                                                     </td>
                                                     <td>
+                                                        @if ($m->dokumen_an == null)
+                                                            <span class="badge badge-pill badge-lg badge-primary">Tidak memerlukan dokumen AN</span>
+                                                        @else
                                                         <a href="/storage/acceptance_notice/{{$m->dokumen_an}}" target="_blank">
                                                             <button class="btn btn-md bg-primary mr-3" style="color: white;"  data-toggle="modal" data-target="#material-sampai" onclick="material_sampai({{ $m->id }});">
                                                                 Acceptance Notice
                                                             </button>
                                                         </a>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <button class="btn btn-md bg-success mr-3" style="color: white;" data-toggle="modal" data-target="#bpm_modal" onclick="bpm({{ $m->id }});">

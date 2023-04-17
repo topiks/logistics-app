@@ -262,10 +262,14 @@ class StaffController extends Controller
             $material_inventory->pemasok = $material_sampai->pemasok;
             $material_inventory->eda = $material_sampai->eda;
             $material_inventory->dokumen_material = $material_sampai->dokumen_material;
-            $material_inventory->dokumen_an = $request->file('file-an')->getClientOriginalName();
             $material_inventory->acc_notice_pqc = $acc_notice_pqc;
             $material_inventory->op_no = $op_no;
             $material_inventory->bpm_no = $bpm_no;
+            
+            if($request->file('file-an'))
+                $material_inventory->dokumen_an = $request->file('file-an')->getClientOriginalName();
+            else
+                $material_inventory->dokumen_an = null;
 
             $material_inventory->save();
         }
@@ -283,10 +287,15 @@ class StaffController extends Controller
 
         // ----------------------------
 
-        if($request->file('file-an')->storeAs('public/acceptance_notice', $request->file('file-an')->getClientOriginalName()))
-            return redirect()->route('staff.list-material-inventory', ['kode' => 0])->with('success', 'Data Material berhasil diterima');
+        if($request->file('file-an'))
+        {
+            if($request->file('file-an')->storeAs('public/acceptance_notice', $request->file('file-an')->getClientOriginalName()))
+                return redirect()->route('staff.list-material-inventory', ['kode' => 0])->with('success', 'Data Material berhasil diterima');
+            else
+                return redirect()->route('staff.list-material-inventory', ['kode' => 0])->with('error', 'Data Material gagal diterima');
+        }
         else
-            return redirect()->route('staff.list-material-inventory', ['kode' => 0])->with('error', 'Data Material gagal diterima');
+            return redirect()->route('staff.list-material-inventory', ['kode' => 0])->with('success', 'Data Material berhasil diterima');
 
     }
 

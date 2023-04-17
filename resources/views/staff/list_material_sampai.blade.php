@@ -262,8 +262,8 @@
                     <form action="{{ route('staff.accept-material') }}" enctype="multipart/form-data" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="input-file-syarat-kedatangan">Lampirkan File AN (Acceptance Notice) dalam PDF</label>
-                            <input name="file-an" accept="application/pdf" type="file" class="form-control-file" required>
+                            <label for="input-file-syarat-kedatangan">Lampirkan File AN (Acceptance Notice) dalam PDF <b>(opsional)</b></label>
+                            <input name="file-an" accept="application/pdf" type="file" class="form-control-file">
                         </div>
                         <div class="form-group" hidden>
                             <label class="form-control-label" for="input-stock">ACC. Notice (PQC)</label>
