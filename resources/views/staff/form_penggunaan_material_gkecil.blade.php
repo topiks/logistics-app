@@ -91,7 +91,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="form-control-label" for="input-school">Project</label>
+                                                <label class="form-control-label" for="input-school">Order</label>
                                                 <input name="project" type="text" class="form-control"  required>
                                             </div>
 

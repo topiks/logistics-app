@@ -1272,4 +1272,32 @@ class StaffController extends Controller
         // bpg
         return view('excel.t_BPG');
     }
+
+    public function hapus_pengadaan(Request $request)
+    {
+        $id = $request->input('id');
+
+        // ----------------------------
+
+        $material_datang = Material_Datang::find($id);
+        $material_datang->delete();
+
+        // ----------------------------
+
+        return redirect()->route('staff.list-kedatangan-material', ['kode' => 0])->with('success', 'Data berhasil dihapus');
+    }
+
+    public function hapus_restock(Request $request)
+    {
+        $id = $request->input('id');
+
+        // ----------------------------
+
+        $request_restock = Request_Stock::find($id);
+        $request_restock->delete();
+
+        // ----------------------------
+
+        return redirect()->route('staff.list-request-restock-material')->with('success', 'Request Restock Material berhasil dihapus');
+    }
 }

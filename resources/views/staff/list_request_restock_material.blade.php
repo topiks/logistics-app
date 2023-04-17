@@ -82,11 +82,16 @@
                                                                     Accept
                                                                 </button>
 
-                                                                <button class="btn btn-md bg-danger mr-3" style="color: white;"  data-toggle="modal" data-target="#reject-modal" onclick="reject_material({{ $m->id }});">
+                                                                <button class="btn btn-md bg-warning mr-3" style="color: white;"  data-toggle="modal" data-target="#reject-modal" onclick="reject_material({{ $m->id }});">
                                                                     Reject
+                                                                </button>
+
+                                                                <button class="btn btn-md bg-danger mr-3" style="color: white;"  data-toggle="modal" data-target="#material-hapus" onclick="material_hapus({{ $m->id }});">
+                                                                Hapus
                                                                 </button>
                                                             @endif
                                                         @endif
+
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -110,47 +115,69 @@
 
 <!-- Accepted -->
 <div class="modal fade" id="acc-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h3 class="mt-3">Setujui Restock Material ?</h3>
-                    <form action="{{ route('staff.acc-request-restock-material') }}" enctype="multipart/form-data" method="post">
-                        @csrf
-                        <div class="form-group" hidden>
-                            <label class="form-control-label" for="input-school">id</label>
-                            <input id="id_material_accept" name="id" type="text" class="form-control" required>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="loloskan" href="" type="submit" class="btn btn-success">Setujui</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                </div>
-                </form>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="mt-3">Setujui Restock Material ?</h3>
+                <form action="{{ route('staff.acc-request-restock-material') }}" enctype="multipart/form-data" method="post">
+                    @csrf
+                    <div class="form-group" hidden>
+                        <label class="form-control-label" for="input-school">id</label>
+                        <input id="id_material_accept" name="id" type="text" class="form-control" required>
+                    </div>
             </div>
+            <div class="modal-footer">
+                <button id="loloskan" href="" type="submit" class="btn btn-success">Setujui</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+            </form>
         </div>
     </div>
+</div>
 
 <!-- Rejected -->
 <div class="modal fade" id="reject-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h3 class="mt-3">Tolak Restock Material ?</h3>
-                    <form action="{{ route('staff.reject-request-restock-material') }}" enctype="multipart/form-data" method="post">
-                        @csrf
-                        <div class="form-group" hidden>
-                            <label class="form-control-label" for="input-school">id</label>
-                            <input id="id_reject_accept" name="id" type="text" class="form-control" required>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="loloskan" href="" type="submit" class="btn btn-danger">Tolak</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                </div>
-                </form>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="mt-3">Tolak Restock Material ?</h3>
+                <form action="{{ route('staff.reject-request-restock-material') }}" enctype="multipart/form-data" method="post">
+                    @csrf
+                    <div class="form-group" hidden>
+                        <label class="form-control-label" for="input-school">id</label>
+                        <input id="id_reject_accept" name="id" type="text" class="form-control" required>
+                    </div>
             </div>
+            <div class="modal-footer">
+                <button id="loloskan" href="" type="submit" class="btn btn-warning">Tolak</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+            </form>
         </div>
     </div>
+</div>
+
+<!-- Hapus  -->
+<div class="modal fade" id="material-hapus" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="mt-3">Hapus Material ?</h3>
+                <form action="{{ route('staff.hapus-restock') }}" enctype="multipart/form-data" method="post">
+                    @csrf
+                    <div class="form-group" hidden>
+                        <label class="form-control-label" for="input-school">id</label>
+                        <input id="id_material_hapus" name="id" type="text" class="form-control" required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button id="loloskan" href="" type="submit" class="btn btn-danger">Hapus</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <script type="text/javascript">
         function accept_material(id) {
@@ -159,6 +186,10 @@
 
         function reject_material(id) {
             document.getElementById('id_reject_accept').setAttribute('value', id);
+        }
+
+        function material_hapus(id) {
+            document.getElementById('id_material_hapus').value = id;
         }
 
     </script>

@@ -92,7 +92,7 @@
                                                     <th>Jumlah</th>
                                                     <th>Satuan</th>
                                                     <th>Kode Material</th>
-                                                    <th>Project</th>
+                                                    <th>Order</th>
                                                     <th>Diupdate Tanggal</th>
                                                     <th>Waktu Pengambilan</th>
                                                     <th>Aksi</th>

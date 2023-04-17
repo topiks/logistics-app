@@ -149,6 +149,12 @@
                                                             Sampai
                                                         </button>
                                                         @endif
+
+                                                        @if (Auth::user()->role == 1)
+                                                        <button class="btn btn-md bg-danger mr-3" style="color: white;"  data-toggle="modal" data-target="#material-hapus" onclick="material_hapus({{ $m->id }});">
+                                                            Hapus
+                                                        </button>
+                                                        @endif
                                                     </td>
                                                     
                                                 </tr>
@@ -191,9 +197,33 @@
         </div>
     </div>
 
+    <div class="modal fade" id="material-hapus" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mt-3">Hapus Material ?</h3>
+                    <form action="{{ route('staff.hapus-pengadaan') }}" enctype="multipart/form-data" method="post">
+                        @csrf
+                        <div class="form-group" hidden>
+                            <label class="form-control-label" for="input-school">id</label>
+                            <input id="id_material_hapus" name="id" type="text" class="form-control" required>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="loloskan" href="" type="submit" class="btn btn-danger">Hapus</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
         function material_sampai(id) {
             document.getElementById('id_material_sampai').value = id;
+        }
+        function material_hapus(id) {
+            document.getElementById('id_material_hapus').value = id;
         }
     </script>
 
