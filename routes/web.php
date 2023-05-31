@@ -178,6 +178,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('hapus_pengadaan', [StaffController::class, 'hapus_pengadaan'])->name('staff.hapus-pengadaan');
     Route::post('hapus_restock', [StaffController::class, 'hapus_restock'])->name('staff.hapus-restock');
+
+    // ----------------------
+
+    Route::get('/list_barang_masuk/{kode}', [StaffController::class, 'list_barang_masuk'])->name('staff.list-barang-masuk');
+    Route::get('/list_barang_keluar/{kode}', [StaffController::class, 'list_barang_keluar'])->name('staff.list-barang-keluar');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:0']], function () {

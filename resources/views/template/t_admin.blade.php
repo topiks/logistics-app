@@ -136,7 +136,7 @@
 
                             @endif
 
-                            @if (Auth::user()->role =! 0)
+                            @if (Auth::user()->role != 0 && Auth::user()->role != 3)
                             <li class="nav-item">
                                 <a class="nav-link" href="/list_request_restock_material"
                                     style="font-size: 18px; text-align: center">
@@ -146,6 +146,49 @@
                             </li>
 
                             <hr class="my-2">
+                            @endif
+
+                            @if (Auth::user()->role != 0 && Auth::user()->role != 3)
+                            <li class="nav-item dropdown">
+                                <a style="font-size: 18px; text-align: center" class="nav-link" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-list mr-2" style="font-size: 16px;"></i>
+                                    <span>Daftar Material</span>
+                                </a>
+
+                                
+                                <div class="dropdown-menu  dropdown-menu-right">    
+                                    <div class="list-group list-group-flush">
+                                        <a href="/list_barang_masuk/0"
+                                            class="list-group-item list-group-item-action">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                </div>
+                                                <div class="col ml--2">
+                                                    <h4 class="mb-0 text-sm">Masuk</h4>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="list-group list-group-flush">
+                                        <a href="/list_barang_keluar/0"
+                                            class="list-group-item list-group-item-action">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                </div>
+                                                <div class="col ml--2">
+                                                    <h4 class="mb-0 text-sm">Keluar</h4>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <hr class="my-2">
+
                             @endif
 
                             @if (Auth::user()->role != 0)
@@ -160,6 +203,7 @@
                             <hr class="my-2">
                             @endif
 
+                          
                         </ul>
 
                         <hr class="my-3">

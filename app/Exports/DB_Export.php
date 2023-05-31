@@ -12,6 +12,8 @@ use App\Models\Material_Sampai;
 use App\Models\Material_Inventory;
 use App\Models\Penggunaan_Material;
 use App\Models\Penggunaan_Gudang_Kecil;
+use App\Models\Daftar_Barang_Masuk;
+use App\Models\Daftar_Barang_Keluar;
 
 class DB_Export implements FromQuery, WithHeadings
 {
@@ -22,6 +24,7 @@ class DB_Export implements FromQuery, WithHeadings
         |----- 2 = Material Inventory / Gudang Besar
         |----- 3 = Material Gudang Kecil
         |----- 4 = Material Penggunaan
+        |----- 5 = Daftar Barang Masuk
     */
 
     use Exportable;
@@ -43,7 +46,11 @@ class DB_Export implements FromQuery, WithHeadings
             return Penggunaan_Material::query();
        } else if ($this->kode_tabel == 4) {
             return Penggunaan_Gudang_Kecil::query();
-       }
+       } else if ($this->kode_tabel == 5) {
+            return Daftar_Barang_Masuk::query();
+       } else if ($this->kode_tabel == 6) {
+            return Daftar_Barang_Keluar::query();
+   }
     }
 
     public function headings(): array
@@ -136,6 +143,40 @@ class DB_Export implements FromQuery, WithHeadings
                 'satuan',
                 'jumlah',
                 'nama project',
+                'dibuat tanggal',
+                'diupdate tanggal'
+            ];
+        }
+        else if ($this->kode_tabel == 5) 
+        {
+            return [
+                'id',
+                'lokasi',
+                'nama_material',
+                'nomor po',
+                'nomor order',
+                'nomor pr',
+                'jumlah',
+                'satuan',
+                'kode material',
+                'nomor spbb nota',
+                'pemasok',
+                'op_no',
+                'bpm_no',
+                'dibuat tanggal',
+                'diupdate tanggal'
+            ];
+        }
+        else if ($this->kode_tabel == 6) 
+        {
+            return [
+                'id',
+                'nama material',
+                'spesifikasi',
+                'kode material',
+                'satuan',
+                'jumlah yang dikeluar',
+                'no bpg',
                 'dibuat tanggal',
                 'diupdate tanggal'
             ];

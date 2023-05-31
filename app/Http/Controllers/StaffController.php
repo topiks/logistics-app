@@ -25,6 +25,8 @@ use App\Models\Notifikasi;
 use App\Models\LPB;
 use App\Models\BPM;
 use App\Models\BPG;
+use App\Models\Daftar_Barang_Masuk;
+use App\Models\Daftar_Barang_Keluar;
 
 use App\Mail\MyMail;
 
@@ -272,6 +274,24 @@ class StaffController extends Controller
                 $material_inventory->dokumen_an = null;
 
             $material_inventory->save();
+
+            // ----------------------------
+
+            $daftar_barang_masuk = new Daftar_Barang_Masuk;
+            $daftar_barang_masuk->lokasi = $lokasi;
+            $daftar_barang_masuk->nama_material = $nama_material[0][$i];
+            $daftar_barang_masuk->nomor_po = $material_sampai->nomor_po;
+            $daftar_barang_masuk->nomor_order = $material_sampai->nomor_order;
+            $daftar_barang_masuk->nomor_pr = $material_sampai->nomor_pr;
+            $daftar_barang_masuk->jumlah = $jumlah_material[0][$i];
+            $daftar_barang_masuk->satuan = $satuan[0][$i];
+            $daftar_barang_masuk->kode_material = $kode_material[0][$i];
+            $daftar_barang_masuk->nomor_spbb_nota = $material_sampai->nomor_spbb_nota;
+            $daftar_barang_masuk->pemasok = $material_sampai->pemasok;
+            $daftar_barang_masuk->op_no = $op_no;
+            $daftar_barang_masuk->bpm_no = $bpm_no;
+
+            $daftar_barang_masuk->save();
         }
 
         // ----------------------------
@@ -612,7 +632,6 @@ class StaffController extends Controller
                 $penggunaan_material_satuan = $penggunaan_material_satuan->first();
                 $penggunaan_material_satuan->jumlah_yang_dipinjam = $penggunaan_material_satuan->jumlah_yang_dipinjam + $jumlah_penyerahan[0][$i];
                 $penggunaan_material_satuan->save();
-                echo "ada";
             }
             else{
                 $penggunaan_material_satuan = new Penggunaan_Material;
@@ -629,8 +648,16 @@ class StaffController extends Controller
                 $penggunaan_material_satuan->nomor_bpm = $penggunaan_material->nomor_bpm;
                 $penggunaan_material_satuan->nomor_bpg = $nomor_bpg;
                 $penggunaan_material_satuan->save();
-                echo "tidak ada";
             }
+
+            $daftar_barang_keluar = new Daftar_Barang_Keluar;
+            $daftar_barang_keluar->nama_material = $nama_material[0][$i];
+            $daftar_barang_keluar->spesifikasi = $spesifikasi[0][$i];
+            $daftar_barang_keluar->jumlah_yang_dipinjam = $jumlah_penyerahan[0][$i];
+            $daftar_barang_keluar->satuan = $satuan[0][$i];
+            $daftar_barang_keluar->kode_material = $kode_material[0][$i];
+            $daftar_barang_keluar->no_bpg = $nomor_bpg;
+            $daftar_barang_keluar->save();
         }
 
         // ----------------------------
@@ -1118,8 +1145,11 @@ class StaffController extends Controller
         else if($_kode == 3)
             $nama_tabel = 'Material Gudang Kecil';
         else if($_kode == 4)
-        $nama_tabel = 'Material Penggunaan oleh Pekerja';
-        
+            $nama_tabel = 'Material Penggunaan oleh Pekerja';
+        else if($_kode == 5)
+            $nama_tabel = 'Daftar Barang Masuk';
+        else if($_kode == 6)
+            $nama_tabel = 'Daftar Barang Keluar';
 
         return Excel::download(new DB_Export($_kode), 'Tabel '.$nama_tabel.'.xlsx');
     }
@@ -1299,5 +1329,41 @@ class StaffController extends Controller
         // ----------------------------
 
         return redirect()->route('staff.list-request-restock-material')->with('success', 'Request Restock Material berhasil dihapus');
+    }
+
+    // ------------------------------------------------
+
+    public function list_barang_masuk($kode)
+    {   
+        $kode = $kode;
+
+        if($kode == 0)
+            $daftar_barang_masuk = Daftar_Barang_Masuk::all();
+        else if($kode == 1)
+            $daftar_barang_masuk = Daftar_Barang_Masuk::whereDate('updated_at', date('Y-m-d'))->get();
+        else if($kode == 2)
+            $daftar_barang_masuk = Daftar_Barang_Masuk::whereBetween('updated_at', [date('Y-m-d', strtotime('monday this week')), date('Y-m-d', strtotime('sunday this week'))])->get();
+        else if($kode == 3)
+            $daftar_barang_masuk = Daftar_Barang_Masuk::whereMonth('updated_at', date('m'))->get();
+
+        return view('staff.list_tampilan_barang_masuk', compact('daftar_barang_masuk', 'kode'));
+    }
+
+    // ------------------------------------------------
+
+    public function list_barang_keluar($kode)
+    {
+        $kode = $kode;
+
+        if($kode == 0)
+            $daftar_barang_keluar = Daftar_Barang_Keluar::all();
+        else if($kode == 1)
+            $daftar_barang_keluar = Daftar_Barang_Keluar::whereDate('updated_at', date('Y-m-d'))->get();
+        else if($kode == 2)
+            $daftar_barang_keluar = Daftar_Barang_Keluar::whereBetween('updated_at', [date('Y-m-d', strtotime('monday this week')), date('Y-m-d', strtotime('sunday this week'))])->get();
+        else if($kode == 3)
+            $daftar_barang_keluar = Daftar_Barang_Keluar::whereMonth('updated_at', date('m'))->get();
+
+        return view('staff.list_tampilan_barang_keluar', compact('daftar_barang_keluar', 'kode'));
     }
 }
